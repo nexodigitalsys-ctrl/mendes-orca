@@ -253,7 +253,7 @@ export default function PropostaPage() {
 
       {/* Print styles */}
       <style>{`
-        @page { size: A4; margin: 10mm 12mm; }
+        @page { size: A4; margin: 5mm 6mm; }
 
         @media print {
           html, body { width: 100% !important; margin: 0 !important; padding: 0 !important; }
@@ -270,7 +270,7 @@ export default function PropostaPage() {
             border-radius: 0 !important;
             margin: 0 !important;
             padding: 0 !important;
-            font-size: 10pt !important;
+            font-size: 8pt !important;
           }
 
           /* TABLE */
@@ -292,58 +292,63 @@ export default function PropostaPage() {
             background: #1a1a1a !important;
             color: #C9A227 !important;
             font-weight: 600 !important;
-            font-size: 8pt !important;
+            font-size: 7pt !important;
             text-transform: uppercase !important;
             letter-spacing: 0.5px !important;
-            padding: 6px 4px !important;
+            padding: 4px 3px !important;
             text-align: left !important;
             white-space: nowrap !important;
             border: none !important;
             vertical-align: middle !important;
           }
 
-          /* TD — table-cell forced */
+          /* TD — table-cell forced, proportional height */
           .paper td {
             display: table-cell !important;
             box-sizing: border-box !important;
-            vertical-align: middle !important;
-            padding: 6px 4px !important;
-            font-size: 9pt !important;
+            vertical-align: top !important;
+            padding: 4px 3px !important;
+            font-size: 8pt !important;
             white-space: normal !important;
             word-wrap: break-word !important;
             border: none !important;
             border-bottom: 1px solid #e5ddc8 !important;
+            overflow: visible !important;
           }
 
+          /* ROW HEIGHT — auto, grows with content */
+          .paper tbody tr { height: auto !important; min-height: 60px !important; }
+
           /* ZEBRADO */
-          .paper tbody tr:nth-child(even) td { background: #f8f6f1 !important; }
+          .paper tbody tr:nth-child(even) td { background: #f5f3ed !important; }
           .paper tbody tr:nth-child(odd) td { background: #ffffff !important; }
 
-          /* COLUMN WIDTHS — sum 100% */
-          .paper th:nth-child(1), .paper td:nth-child(1) { width: 5% !important; text-align: center !important; white-space: nowrap !important; }
-          .paper th:nth-child(2), .paper td:nth-child(2) { width: 6% !important; text-align: center !important; white-space: nowrap !important; }
-          .paper th:nth-child(3), .paper td:nth-child(3) { width: 22% !important; text-align: left !important; padding-left: 6px !important; }
-          .paper th:nth-child(4), .paper td:nth-child(4) { width: 10% !important; text-align: center !important; white-space: nowrap !important; font-size: 9pt !important; }
-          .paper th:nth-child(5), .paper td:nth-child(5) { width: 24% !important; text-align: left !important; font-size: 8pt !important; line-height: 1.3 !important; }
-          .paper th:nth-child(6), .paper td:nth-child(6) { width: 15% !important; text-align: center !important; }
-          .paper th:nth-child(7), .paper td:nth-child(7) { width: 10% !important; text-align: right !important; white-space: nowrap !important; padding-right: 8px !important; }
-          .paper th:nth-child(8), .paper td:nth-child(8) { width: 10% !important; text-align: right !important; white-space: nowrap !important; padding-right: 8px !important; font-weight: 700 !important; }
+          /* COLUMN WIDTHS — 198mm (210 - 2x6) */
+          .paper th:nth-child(1), .paper td:nth-child(1) { width: 4% !important; text-align: center !important; white-space: nowrap !important; }
+          .paper th:nth-child(2), .paper td:nth-child(2) { width: 5% !important; text-align: center !important; white-space: nowrap !important; }
+          .paper th:nth-child(3), .paper td:nth-child(3) { width: 20% !important; text-align: left !important; padding-left: 4px !important; }
+          .paper th:nth-child(4), .paper td:nth-child(4) { width: 9% !important; text-align: center !important; white-space: nowrap !important; font-size: 7.5pt !important; }
+          .paper th:nth-child(5), .paper td:nth-child(5) { width: 26% !important; text-align: left !important; font-size: 7.5pt !important; line-height: 1.25 !important; }
+          .paper th:nth-child(6), .paper td:nth-child(6) { width: 16% !important; text-align: center !important; }
+          .paper th:nth-child(7), .paper td:nth-child(7) { width: 11% !important; text-align: right !important; white-space: nowrap !important; padding-right: 5px !important; }
+          .paper th:nth-child(8), .paper td:nth-child(8) { width: 11% !important; text-align: right !important; white-space: nowrap !important; padding-right: 5px !important; font-weight: 700 !important; }
 
-          /* CODE bold, name normal */
-          .paper td:nth-child(3) b { font-size: 9pt !important; }
-          .paper td:nth-child(3) { line-height: 1.4 !important; }
+          /* CODE bold, name smaller */
+          .paper td:nth-child(3) b { font-size: 8pt !important; font-weight: 700 !important; }
+          .paper td:nth-child(3) { line-height: 1.2 !important; }
+          .paper td:nth-child(3) br + * { font-size: 7.5pt !important; color: #555 !important; }
 
-          /* PHOTOS */
-          .paper .td-img img { max-height: 70px !important; width: auto !important; object-fit: contain !important; border: 1px solid #e5ddc8 !important; border-radius: 3px !important; }
+          /* PHOTOS — proportional */
+          .paper .td-img img { height: 70px !important; width: auto !important; object-fit: contain !important; border: 1px solid #e5ddc8 !important; border-radius: 3px !important; }
           .paper .placeholder-img { font-size: 20pt !important; color: #C9A227 !important; }
 
           /* SUBTOTAL ROW */
           .paper .subt td {
             background: #F7F4EC !important;
-            font-weight: 700 !important;
+            font-weight: 600 !important;
             color: #0A0A0A !important;
-            font-size: 10pt !important;
-            padding: 8px 12px !important;
+            font-size: 9pt !important;
+            padding: 6px 8px !important;
             border-top: 2px solid #C9A227 !important;
             border-bottom: none !important;
             text-align: right !important;
@@ -355,21 +360,26 @@ export default function PropostaPage() {
             justify-content: space-between !important;
             background: #1a1a1a !important;
             color: #C9A227 !important;
-            padding: 10px 12px !important;
+            padding: 8px 10px !important;
             border-radius: 4px !important;
-            margin-top: 12px !important;
+            margin-top: 8px !important;
             font-weight: 700 !important;
-            font-size: 10.5pt !important;
+            font-size: 10pt !important;
           }
 
           /* AREA ENVIRONMENT BAR */
           .paper .area-t {
             background: linear-gradient(90deg, #C9A227, #B8911F) !important;
             color: #1a1a1a !important;
-            padding: 5px 10px !important;
+            padding: 4px 8px !important;
             font-weight: 700 !important;
+            font-size: 9pt !important;
             margin-bottom: 0 !important;
           }
+
+          body { background: white !important; }
+          .paper .cli { background: #F7F4EC !important; }
+        }
 
           body { background: white !important; }
           .paper .cli { background: #F7F4EC !important; }
