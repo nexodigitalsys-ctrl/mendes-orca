@@ -253,7 +253,7 @@ export default function PropostaPage() {
 
       {/* Print styles */}
       <style>{`
-        @page { size: A4 landscape; margin: 8mm; }
+        @page { size: A4; margin: 10mm 12mm; }
 
         @media print {
           html, body { width: 100% !important; margin: 0 !important; padding: 0 !important; }
@@ -322,12 +322,12 @@ export default function PropostaPage() {
           .paper td:nth-child(8) { text-align: right !important; }
           .paper td:nth-child(8) { font-weight: 700 !important; }
 
-          /* Column widths */
+          /* Column widths — portrait 186mm */
           .paper th:nth-child(1), .paper td:nth-child(1) { width: 4% !important; }
           .paper th:nth-child(2), .paper td:nth-child(2) { width: 5% !important; }
           .paper th:nth-child(3), .paper td:nth-child(3) { width: 20% !important; }
           .paper th:nth-child(4), .paper td:nth-child(4) { width: 10% !important; text-align: center !important; }
-          .paper th:nth-child(5), .paper td:nth-child(5) { width: 25% !important; text-align: justify !important; font-size: 8.5pt !important; line-height: 1.3 !important; }
+          .paper th:nth-child(5), .paper td:nth-child(5) { width: 25% !important; text-align: justify !important; font-size: 8pt !important; line-height: 1.3 !important; }
           .paper th:nth-child(6), .paper td:nth-child(6) { width: 16% !important; text-align: center !important; }
           .paper th:nth-child(7), .paper td:nth-child(7) { width: 10% !important; }
           .paper th:nth-child(8), .paper td:nth-child(8) { width: 10% !important; }
@@ -336,8 +336,8 @@ export default function PropostaPage() {
           .paper td:nth-child(3) b { font-size: 9pt !important; }
           .paper td:nth-child(3) { line-height: 1.4 !important; }
 
-          /* Illustration */
-          .paper .td-img img { max-height: 90px !important; width: auto !important; object-fit: cover !important; border-radius: 4px !important; border: 1px solid #e5ddc8 !important; }
+          /* Illustration — portrait */
+          .paper .td-img img { max-height: 80px !important; width: auto !important; object-fit: cover !important; border-radius: 4px !important; border: 1px solid #e5ddc8 !important; }
           .paper .placeholder-img { font-size: 24pt !important; color: #C9A227 !important; }
 
           /* Subtotal row */
