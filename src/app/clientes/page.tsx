@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import AppLayout from "@/components/AppLayout";
-import { CLIENTS, QUOTES, brl, quoteSubtotal, type Client } from "@/lib/constants";
+import { CLIENTS, QUOTES, brl, quoteSubtotal, type Client, type Quote } from "@/lib/constants";
 import { useLocalCollection } from "@/lib/store";
 
 const EMPTY_FORM: Client = {
@@ -31,6 +31,7 @@ const TYPE_STYLE: Record<string, string> = {
 
 export default function ClientesPage() {
   const [clients, setClients] = useLocalCollection<Client>("mendes-clients", CLIENTS);
+  const [quotes] = useLocalCollection<Quote>("mendes-quotes", QUOTES);
   const [search, setSearch] = useState("");
   const [form, setForm] = useState<Client>(EMPTY_FORM);
   const [editing, setEditing] = useState<string | null>(null);
@@ -53,7 +54,7 @@ export default function ClientesPage() {
   }, [clients, search]);
 
   function getClientQuotes(clientId: string) {
-    return QUOTES.filter((q) => q.clientId === clientId);
+    return quotes.filter((q) => q.clientId === clientId);
   }
 
   function openNew() {

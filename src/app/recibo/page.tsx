@@ -68,7 +68,7 @@ function ReciboContent() {
 
   useEffect(() => {
     if (quote && !receiptValue) {
-      setReceiptValue(String(Math.round(total * 50)));
+      setReceiptValue(String(Math.round(total * 0.5)));
     }
     if (quote && !reference) {
       setReference(`sinal referente ao orçamento ${quote.number} (${quotePieces(quote)} peças de móveis para áreas externas)`);
