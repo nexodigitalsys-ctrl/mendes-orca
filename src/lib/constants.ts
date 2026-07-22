@@ -55,7 +55,7 @@ export const CATALOG: Product[] = [
   {
     code: "FILIPINAS-MR",
     name: "MESA FILIPINAS TAMPO REDONDO C/ GIRATÓRIO",
-    meas: "1,80 x 0,75",
+    meas: "1,80 × 0,75",
     finish: "Estrutura de alumínio, pintura eletrostática. Tampo giratório em madeira cumaru embutido.",
     price: 9900,
     image: "",
@@ -63,7 +63,7 @@ export const CATALOG: Product[] = [
   {
     code: "FILIPINAS-CB",
     name: "CADEIRA FILIPINAS COM BRAÇO",
-    meas: "0,56 x 0,58 x 0,84",
+    meas: "0,56 × 0,58 × 0,84",
     finish: "Estrutura de alumínio, pintura eletrostática. Trama em corda náutica, apoio de braço em madeira cumaru.",
     price: 1190,
     image: "",
@@ -71,7 +71,7 @@ export const CATALOG: Product[] = [
   {
     code: "MABI-BISTRO",
     name: "MABI MESA ALTA BISTRO",
-    meas: "0,80 x 1,00H",
+    meas: "0,80 × 1,00H",
     finish: "Estrutura de alumínio, pintura eletrostática. Tampo em madeira cumaru.",
     price: 2890,
     image: "",
@@ -79,7 +79,7 @@ export const CATALOG: Product[] = [
   {
     code: "BQBI02",
     name: "BANQUETA ALTA BISTRO C/ DETALHE EM MADEIRA",
-    meas: "0,42 x 0,50 x 1,05H",
+    meas: "0,42 × 0,50 × 1,05H",
     finish: "Estrutura de alumínio, pintura eletrostática. Trama em corda náutica, parte superior do encosto em madeira cumaru.",
     price: 1190,
     image: "",
@@ -87,7 +87,7 @@ export const CATALOG: Product[] = [
   {
     code: "BUZIOS-POL",
     name: "POLTRONA BUZIOS",
-    meas: "0,80 x 0,85 x 0,80H",
+    meas: "0,80 × 0,85 × 0,80H",
     finish: "Estrutura de alumínio, pintura eletrostática. Trama em corda náutica, tapeçaria em tecido Acquablock.",
     price: 3890,
     image: "",
@@ -95,7 +95,7 @@ export const CATALOG: Product[] = [
   {
     code: "JHULIAN-MC",
     name: "MESA DE CENTRO JHULIAN",
-    meas: "0,90 x 0,35H",
+    meas: "0,90 × 0,35H",
     finish: "Estrutura de alumínio, pintura eletrostática. Trama em corda náutica, tampo em madeira cumaru. Sem balde cooler.",
     price: 3690,
     image: "",
@@ -103,7 +103,7 @@ export const CATALOG: Product[] = [
   {
     code: "BUZIOS-SOFA",
     name: "SOFÁ BUZIOS MODESP",
-    meas: "2,35 x 0,85 x 0,80H",
+    meas: "2,35 × 0,85 × 0,80H",
     finish: "Estrutura de alumínio, pintura eletrostática. Trama em corda náutica, tapeçaria em tecido Acquablock.",
     price: 12900,
     image: "",
@@ -111,7 +111,7 @@ export const CATALOG: Product[] = [
   {
     code: "RIPADA-AL",
     name: "MESA RIPADA ALUMÍNIO",
-    meas: "1,20 x 0,75H",
+    meas: "1,20 × 0,75H",
     finish: "Estrutura e tampo em alumínio, pintura eletrostática. Base cone com trama em corda náutica.",
     price: 2890,
     image: "",
@@ -119,7 +119,7 @@ export const CATALOG: Product[] = [
   {
     code: "MICHIGAN",
     name: "CADEIRA ESTOFADA MICHIGAN",
-    meas: "0,61 x 0,64 x 0,85H",
+    meas: "0,61 × 0,64 × 0,85H",
     finish: "Estrutura de alumínio, pintura eletrostática. Trama em corda náutica, assento estofado em tecido Acquablock.",
     price: 1590,
     image: "",
@@ -127,7 +127,7 @@ export const CATALOG: Product[] = [
   {
     code: "BUZIOS-BANQ",
     name: "BANQUETA ALTA BUZIOS (ESTOFADA)",
-    meas: "0,57 x 0,59 x 1,10",
+    meas: "0,57 × 0,59 × 1,10",
     finish: "Estrutura de alumínio, pintura eletrostática. Trama em corda náutica, assento e encosto estofados em Acquablock.",
     price: 1690,
     image: "",

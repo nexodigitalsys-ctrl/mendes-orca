@@ -267,26 +267,97 @@ export default function PropostaPage() {
             padding: 20px !important;
             font-size: 10pt !important;
           }
-          .paper table { table-layout: fixed !important; width: 100% !important; }
+
+          /* TABLE */
+          .paper table { table-layout: fixed !important; width: 100% !important; border-collapse: collapse !important; }
           .paper table thead { display: table-header-group !important; }
           .paper table tbody { display: table-row-group !important; }
           .paper table tbody tr,
           .paper table thead tr { display: table-row !important; }
-          .paper th, .paper td {
+
+          /* THEAD — dark header, gold text */
+          .paper th {
             display: table-cell !important;
-            font-size: 9pt !important;
-            padding: 4px 3px !important;
-            vertical-align: top !important;
+            background: #1a1a1a !important;
+            color: #C9A227 !important;
+            font-weight: 600 !important;
+            font-size: 8pt !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+            padding: 8px 6px !important;
+            text-align: left !important;
+            white-space: nowrap !important;
             border: none !important;
           }
-          .paper th { white-space: nowrap !important; }
-          .paper td { white-space: normal !important; word-wrap: break-word !important; }
+          .paper th:nth-child(1),
+          .paper th:nth-child(2),
+          .paper th:nth-child(7),
+          .paper th:nth-child(8) { text-align: center !important; }
+
+          /* TD — table-cell forced, striped rows */
+          .paper td {
+            display: table-cell !important;
+            vertical-align: middle !important;
+            padding: 8px 6px !important;
+            font-size: 9pt !important;
+            white-space: normal !important;
+            word-wrap: break-word !important;
+            border: none !important;
+            border-bottom: 1px solid #e5ddc8 !important;
+          }
+          .paper tbody tr:nth-child(even) td { background: #f8f6f1 !important; }
+          .paper tbody tr:nth-child(odd) td { background: #ffffff !important; }
           .paper td:nth-child(1),
           .paper td:nth-child(2),
           .paper td:nth-child(7),
           .paper td:nth-child(8) { white-space: nowrap !important; }
-          .paper .th-img, .paper .td-img { width: 70px !important; }
-          .paper .td-img img { width: 60px !important; height: 45px !important; }
+          .paper td:nth-child(1),
+          .paper td:nth-child(2) { text-align: center !important; }
+          .paper td:nth-child(7),
+          .paper td:nth-child(8) { text-align: right !important; }
+          .paper td:nth-child(8) { font-weight: 700 !important; }
+
+          /* Column widths */
+          .paper th:nth-child(1), .paper td:nth-child(1) { width: 4% !important; }
+          .paper th:nth-child(2), .paper td:nth-child(2) { width: 5% !important; }
+          .paper th:nth-child(3), .paper td:nth-child(3) { width: 20% !important; }
+          .paper th:nth-child(4), .paper td:nth-child(4) { width: 10% !important; text-align: center !important; }
+          .paper th:nth-child(5), .paper td:nth-child(5) { width: 25% !important; text-align: justify !important; font-size: 8.5pt !important; line-height: 1.3 !important; }
+          .paper th:nth-child(6), .paper td:nth-child(6) { width: 16% !important; text-align: center !important; }
+          .paper th:nth-child(7), .paper td:nth-child(7) { width: 10% !important; }
+          .paper th:nth-child(8), .paper td:nth-child(8) { width: 10% !important; }
+
+          /* Code bold, name normal */
+          .paper td:nth-child(3) b { font-size: 9pt !important; }
+          .paper td:nth-child(3) { line-height: 1.4 !important; }
+
+          /* Illustration */
+          .paper .td-img img { max-height: 90px !important; width: auto !important; object-fit: cover !important; border-radius: 4px !important; border: 1px solid #e5ddc8 !important; }
+          .paper .placeholder-img { font-size: 24pt !important; color: #C9A227 !important; }
+
+          /* Subtotal row */
+          .paper .subt td {
+            background: #F7F4EC !important;
+            font-weight: 700 !important;
+            color: #0A0A0A !important;
+            font-size: 10pt !important;
+            border-top: 2px solid #C9A227 !important;
+            border-bottom: none !important;
+          }
+
+          /* Grand total bar */
+          .paper .grand {
+            display: flex !important;
+            justify-content: space-between !important;
+            background: #1a1a1a !important;
+            color: #C9A227 !important;
+            padding: 10px 12px !important;
+            border-radius: 4px !important;
+            margin-top: 12px !important;
+            font-weight: 700 !important;
+            font-size: 11pt !important;
+          }
+
           body { background: white !important; }
           .paper .cli { background: #F7F4EC !important; }
         }
@@ -330,14 +401,15 @@ export default function PropostaPage() {
         .paper .cli b { color: #8a6d1a; }
         .paper .orc-title { font-weight: 700; font-size: 13px; letter-spacing: 2px; margin-bottom: 4px; }
         .paper .area-t {
-          background: #C9A227;
+          background: linear-gradient(90deg, #C9A227, #B8911F);
           color: #0A0A0A;
           font-weight: 700;
           font-size: 11px;
           letter-spacing: 1px;
-          padding: 6px 10px;
+          padding: 6px 12px;
           margin: 12px 0 0;
           text-transform: uppercase;
+          border-radius: 4px 4px 0 0;
         }
         .paper table { width: 100%; border-collapse: collapse; margin-bottom: 6px; }
         .paper th {
@@ -350,7 +422,7 @@ export default function PropostaPage() {
           text-transform: uppercase;
         }
         .paper td { border-bottom: 1px solid #E8E4DA; padding: 7px 5px; font-size: 10.5px; vertical-align: top; }
-        .paper .subt td { background: #F7F4EC; font-weight: 700; color: #0A0A0A; font-size: 11px; }
+        .paper .subt td { background: #F7F4EC; font-weight: 700; color: #0A0A0A; font-size: 11px; border-top: 2px solid #C9A227; }
         .paper .grand {
           display: flex;
           justify-content: space-between;
@@ -374,7 +446,7 @@ export default function PropostaPage() {
         .paper .sig .line { width: 220px; border-top: 1px solid #999; margin: 0 auto 5px; }
         .paper .th-img, .paper .td-img { width: 88px; }
         .paper .td-img img { width: 88px; height: 66px; object-fit: cover; border-radius: 4px; border: 1px solid #E8E4DA; }
-        .paper .placeholder-img { font-size: 20px; }
+        .paper .placeholder-img { font-size: 20px; color: #C9A227; }
         .paper-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; }
         .paper-wrap .paper { min-width: 680px; }
 
