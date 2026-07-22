@@ -693,13 +693,12 @@ export default function OrcamentoPage() {
           >
             E-mail
           </button>
-          <button
-            disabled
-            title="Próxima etapa"
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-xs rounded-xl border border-border text-text2 opacity-50 cursor-not-allowed"
+          <Link
+            href={isEditing ? `/recibo?quote=${editingId}` : "/recibo"}
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-xs rounded-xl border border-gold text-gold hover:bg-gold/10 transition-colors text-center"
           >
             Recibo
-          </button>
+          </Link>
         </div>
       </div>
     </AppLayout>
