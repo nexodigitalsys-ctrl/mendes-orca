@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
-import { CATALOG, CLIENTS, brl, type Product, type Client, type Quote } from "@/lib/constants";
+import { CATALOG, CLIENTS, DEFAULT_COMPANY, brl, type Product, type Client, type Company, type Quote } from "@/lib/constants";
 import { useLocalCollection } from "@/lib/store";
 
 const PAYMENT_LABELS: Record<string, string> = {
@@ -40,6 +40,8 @@ export default function PropostaPage() {
   const [quotes] = useLocalCollection<Quote>("mendes-quotes", []);
   const [catalog] = useLocalCollection<Product>("mendes-catalog", CATALOG);
   const [clients] = useLocalCollection<Client>("mendes-clients", CLIENTS);
+  const [companies] = useLocalCollection<Company>("mendes-company", [DEFAULT_COMPANY]);
+  const company = companies[0] || DEFAULT_COMPANY;
   const [selectedId, setSelectedId] = useState("");
 
   useEffect(() => {
@@ -145,16 +147,21 @@ export default function PropostaPage() {
             {/* Header */}
             <div className="ph">
               <div className="plogo">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/logo-md.png" alt="Mendes" width={46} height={46} />
+                {company.logo ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={company.logo} alt={company.name} width={46} height={46} style={{ objectFit: "contain" }} />
+                ) : (
+                  <div style={{ width: 46, height: 46, borderRadius: "50%", background: "#C9A227", color: "#0A0A0A", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 16 }}>MD</div>
+                )}
                 <div>
-                  <h2>MENDES DESIGN</h2>
-                  <div className="co-tag">MÓVEIS PARA ÁREAS EXTERNAS</div>
+                  <h2>{company.name || "MENDES DESIGN"}</h2>
+                  {company.cnpj && <div style={{ fontSize: "9px", color: "#555" }}>CNPJ: {company.cnpj}</div>}
                 </div>
               </div>
               <div className="co">
-                (34) 9 9899-2309<br />
-                UBERABA - MG<br />
+                {company.phone && <>{company.phone}<br /></>}
+                {company.city && company.state && <>{company.city} - {company.state}<br /></>}
+                {company.email && <>{company.email}<br /></>}
                 {formatDatePtBR(quote.createdAt)}<br />
                 <b className="co-number">{quote.number}</b>
               </div>
@@ -342,17 +349,18 @@ export default function PropostaPage() {
           .paper .td-img img { height: 70px !important; width: auto !important; object-fit: contain !important; border: 1px solid #e5ddc8 !important; border-radius: 3px !important; }
           .paper .placeholder-img { font-size: 20pt !important; color: #C9A227 !important; }
 
-          /* SUBTOTAL ROW */
+          /* SUBTOTAL ROW — flex alignment */
           .paper .subt td {
             background: #F7F4EC !important;
             font-weight: 600 !important;
             color: #0A0A0A !important;
             font-size: 9pt !important;
-            padding: 6px 8px !important;
+            padding: 6px 10px !important;
             border-top: 2px solid #C9A227 !important;
             border-bottom: none !important;
             text-align: right !important;
           }
+          .paper .subt td:first-child { text-align: right !important; font-weight: 700 !important; padding-right: 8px !important; }
 
           /* GRAND TOTAL BAR */
           .paper .grand {

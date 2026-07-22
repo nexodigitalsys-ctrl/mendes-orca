@@ -8,6 +8,7 @@ const items = [
   { href: "/orcamento", label: "Orçamento", icon: "📝" },
   { href: "/catalogo", label: "Catálogo", icon: "🪑" },
   { href: "/clientes", label: "Clientes", icon: "👥" },
+  { href: "/empresa", label: "Empresa", icon: "⚙️" },
   { href: "/proposta", label: "Proposta", icon: "📄" },
 ];
 

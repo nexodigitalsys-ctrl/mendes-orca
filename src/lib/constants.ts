@@ -7,6 +7,30 @@ export interface Product {
   image: string;
 }
 
+export interface Company {
+  name: string;
+  cnpj: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  logo: string;
+  email: string;
+  ie: string;
+}
+
+export const DEFAULT_COMPANY: Company = {
+  name: "MENDES DESIGN MÓVEIS PARA ÁREAS EXTERNAS",
+  cnpj: "",
+  phone: "(34) 9 9899-2309",
+  address: "",
+  city: "UBERABA",
+  state: "MG",
+  logo: "",
+  email: "",
+  ie: "",
+};
+
 export interface Client {
   id: string;
   name: string;

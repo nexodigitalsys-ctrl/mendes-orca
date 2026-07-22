@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import AppLayout from "@/components/AppLayout";
-import { CATALOG, CLIENTS, brl, type Client, type Product, type Quote } from "@/lib/constants";
+import { CATALOG, CLIENTS, DEFAULT_COMPANY, brl, type Client, type Company, type Product, type Quote } from "@/lib/constants";
 import { useLocalCollection } from "@/lib/store";
 import { valorPorExtenso } from "@/lib/extenso";
 
@@ -46,6 +46,8 @@ function ReciboContent() {
   const [quotes] = useLocalCollection<Quote>("mendes-quotes", []);
   const [catalog] = useLocalCollection<Product>("mendes-catalog", CATALOG);
   const [clients] = useLocalCollection<Client>("mendes-clients", CLIENTS);
+  const [companies] = useLocalCollection<Company>("mendes-company", [DEFAULT_COMPANY]);
+  const company = companies[0] || DEFAULT_COMPANY;
   const [selectedId, setSelectedId] = useState(preselectedQuote || "");
   const [receiptValue, setReceiptValue] = useState("");
   const [reference, setReference] = useState("");
@@ -207,16 +209,21 @@ function ReciboContent() {
             {/* Header — idêntico ao proposta */}
             <div className="ph">
               <div className="plogo">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/logo-md.png" alt="Mendes" width={46} height={46} />
+                {company.logo ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={company.logo} alt={company.name} width={46} height={46} style={{ objectFit: "contain" }} />
+                ) : (
+                  <div style={{ width: 46, height: 46, borderRadius: "50%", background: "#C9A227", color: "#0A0A0A", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 16 }}>MD</div>
+                )}
                 <div>
-                  <h2>MENDES DESIGN</h2>
-                  <div className="co-tag">MÓVEIS PARA ÁREAS EXTERNAS</div>
+                  <h2>{company.name || "MENDES DESIGN"}</h2>
+                  {company.cnpj && <div style={{ fontSize: "9px", color: "#555" }}>CNPJ: {company.cnpj}</div>}
                 </div>
               </div>
               <div className="co">
-                (34) 9 9899-2309<br />
-                UBERABA - MG<br />
+                {company.phone && <>{company.phone}<br /></>}
+                {company.city && company.state && <>{company.city} - {company.state}<br /></>}
+                {company.email && <>{company.email}<br /></>}
                 {formatDatePtBR(quote.createdAt)}<br />
                 <b className="co-number">{receiptNumber}</b>
               </div>
