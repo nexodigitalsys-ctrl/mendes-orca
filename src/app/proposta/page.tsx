@@ -196,15 +196,15 @@ export default function PropostaPage() {
                       const unitPrice = item.unitPrice ?? product?.price ?? 0;
                       return (
                         <tr key={ii}>
-                          <td>{ii + 1}</td>
-                          <td>{item.qty}</td>
-                          <td>
+                          <td data-label="Item">{ii + 1}</td>
+                          <td data-label="Qtd">{item.qty}</td>
+                          <td data-label="Código / Produto">
                             <b>{item.productCode}</b>
                             {product && <><br />{product.name}</>}
                           </td>
-                          <td>{product?.meas || "—"}</td>
-                          <td>{product?.finish || "—"}</td>
-                          <td className="td-img">
+                          <td data-label="Medidas">{product?.meas || "—"}</td>
+                          <td data-label="Acabamento">{product?.finish || "—"}</td>
+                          <td data-label="Ilustr." className="td-img">
                             {product?.image ? (
                               // eslint-disable-next-line @next/next/no-img-element
                               <img src={product.image} alt={product.name} />
@@ -212,8 +212,8 @@ export default function PropostaPage() {
                               <span className="placeholder-img">🪑</span>
                             )}
                           </td>
-                          <td>{brl(unitPrice)}</td>
-                          <td>{brl(unitPrice * item.qty)}</td>
+                          <td data-label="Unit.">{brl(unitPrice)}</td>
+                          <td data-label="Total">{brl(unitPrice * item.qty)}</td>
                         </tr>
                       );
                     })}
@@ -267,8 +267,24 @@ export default function PropostaPage() {
             padding: 20px !important;
             font-size: 10pt !important;
           }
-          .paper table { table-layout: fixed !important; }
-          .paper th, .paper td { font-size: 9pt !important; padding: 4px 3px !important; }
+          .paper table { table-layout: fixed !important; width: 100% !important; }
+          .paper table thead { display: table-header-group !important; }
+          .paper table tbody { display: table-row-group !important; }
+          .paper table tbody tr,
+          .paper table thead tr { display: table-row !important; }
+          .paper th, .paper td {
+            display: table-cell !important;
+            font-size: 9pt !important;
+            padding: 4px 3px !important;
+            vertical-align: top !important;
+            border: none !important;
+          }
+          .paper th { white-space: nowrap !important; }
+          .paper td { white-space: normal !important; word-wrap: break-word !important; }
+          .paper td:nth-child(1),
+          .paper td:nth-child(2),
+          .paper td:nth-child(7),
+          .paper td:nth-child(8) { white-space: nowrap !important; }
           .paper .th-img, .paper .td-img { width: 70px !important; }
           .paper .td-img img { width: 60px !important; height: 45px !important; }
           body { background: white !important; }
