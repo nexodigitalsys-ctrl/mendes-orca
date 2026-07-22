@@ -243,13 +243,13 @@ export function brl(value: number): string {
   });
 }
 
-export function quoteSubtotal(quote: Quote): number {
+export function quoteSubtotal(quote: Quote, catalog: Product[] = CATALOG): number {
   return quote.environments.reduce((envSum, env) => {
     return (
       envSum +
       env.items.reduce((itemSum, item) => {
-        const product = CATALOG.find((p) => p.code === item.productCode);
-        return itemSum + (product ? product.price * item.qty : 0);
+        const product = catalog.find((p) => p.code === item.productCode);
+        return itemSum + (product ? (item.unitPrice ?? product.price) * item.qty : 0);
       }, 0)
     );
   }, 0);

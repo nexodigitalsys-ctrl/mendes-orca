@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import AppLayout from "@/components/AppLayout";
-import { CATALOG, CLIENTS, brl, type Quote } from "@/lib/constants";
+import { CATALOG, CLIENTS, brl, type Client, type Product, type Quote } from "@/lib/constants";
 import { useLocalCollection } from "@/lib/store";
 import { valorPorExtenso } from "@/lib/extenso";
 
@@ -15,10 +15,10 @@ function formatDatePtBR(d: string) {
   return `${date.getDate()} de ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 }
 
-function quoteTotal(q: Quote): number {
+function quoteTotal(q: Quote, catalog: Product[]) {
   return q.environments.reduce((s, e) =>
     s + e.items.reduce((s2, i) => {
-      const p = CATALOG.find((pp) => pp.code === i.productCode);
+      const p = catalog.find((pp) => pp.code === i.productCode);
       return s2 + (i.unitPrice ?? p?.price ?? 0) * i.qty;
     }, 0), 0);
 }
@@ -44,6 +44,8 @@ function ReciboContent() {
   const preselectedQuote = searchParams.get("quote");
 
   const [quotes] = useLocalCollection<Quote>("mendes-quotes", []);
+  const [catalog] = useLocalCollection<Product>("mendes-catalog", CATALOG);
+  const [clients] = useLocalCollection<Client>("mendes-clients", CLIENTS);
   const [selectedId, setSelectedId] = useState(preselectedQuote || "");
   const [receiptValue, setReceiptValue] = useState("");
   const [reference, setReference] = useState("");
@@ -61,9 +63,9 @@ function ReciboContent() {
     [quotes, selectedId]
   );
 
-  const client = quote ? CLIENTS.find((c) => c.id === quote.clientId) : null;
+  const client = quote ? clients.find((c) => c.id === quote.clientId) : null;
 
-  const total = quote ? quoteTotal(quote) : 0;
+  const total = quote ? quoteTotal(quote, catalog) : 0;
   const defaultReciboNum = useMemo(() => nextReciboNumber(quotes), [quotes]);
 
   useEffect(() => {
@@ -137,7 +139,7 @@ function ReciboContent() {
           >
             {quotes.map((q) => (
               <option key={q.id} value={q.id}>
-                {q.number} — {q.clientName || CLIENTS.find((c) => c.id === q.clientId)?.name || "Cliente"}
+                {q.number} — {q.clientName || clients.find((c) => c.id === q.clientId)?.name || "Cliente"}
               </option>
             ))}
           </select>

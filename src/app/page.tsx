@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
-import { QUOTES, CLIENTS, brl, quoteSubtotal, quotePieces } from "@/lib/constants";
+import { QUOTES, CLIENTS, CATALOG, brl, quoteSubtotal, quotePieces, type Quote, type Client, type Product } from "@/lib/constants";
+import { useLocalCollection } from "@/lib/store";
 
 const WEEKDAYS = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
 const MONTHS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
@@ -22,22 +25,26 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 export default function Home() {
+  const [quotes] = useLocalCollection<Quote>("mendes-quotes", QUOTES);
+  const [clients] = useLocalCollection<Client>("mendes-clients", CLIENTS);
+  const [catalog] = useLocalCollection<Product>("mendes-catalog", CATALOG);
+
   const now = new Date();
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
 
-  const quotesThisMonth = QUOTES.filter((q) => {
+  const quotesThisMonth = quotes.filter((q) => {
     const d = new Date(q.createdAt);
     return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
   });
 
-  const awaitingReturn = QUOTES.filter((q) => q.status === "enviado");
+  const awaitingReturn = quotes.filter((q) => q.status === "enviado");
 
-  const approvedTotal = QUOTES
+  const approvedTotal = quotes
     .filter((q) => q.status === "aprovado")
-    .reduce((sum, q) => sum + quoteSubtotal(q), 0);
+    .reduce((sum, q) => sum + quoteSubtotal(q, catalog), 0);
 
-  const sorted = [...QUOTES].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  const sorted = [...quotes].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
   return (
     <AppLayout>
@@ -83,7 +90,7 @@ export default function Home() {
         ) : (
           <div className="flex flex-col gap-3">
             {sorted.map((quote) => {
-              const client = CLIENTS.find((c) => c.id === quote.clientId);
+              const client = clients.find((c) => c.id === quote.clientId);
               const pieces = quotePieces(quote);
               const envCount = quote.environments.length;
               const meta = `${pieces} peças · ${envCount} ambiente${envCount > 1 ? "s" : ""}`;
@@ -104,7 +111,7 @@ export default function Home() {
                     </div>
                   </div>
                   <div className="text-right shrink-0">
-                    <div className="text-gold font-bold text-sm">{brl(quoteSubtotal(quote))}</div>
+                    <div className="text-gold font-bold text-sm">{brl(quoteSubtotal(quote, catalog))}</div>
                     <span className={`inline-block text-[10px] font-semibold tracking-[0.5px] px-2.5 py-[3px] rounded-full uppercase mt-1 ${STATUS_STYLES[quote.status]}`}>
                       {STATUS_LABEL[quote.status]}
                     </span>

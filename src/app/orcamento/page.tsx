@@ -26,11 +26,11 @@ function emptyItem(): QuoteItem {
   return { productCode: "", qty: 1 };
 }
 
-function envSubtotal(env: Environment): { total: number; pieces: number } {
+function envSubtotal(env: Environment, catalog: Product[]): { total: number; pieces: number } {
   let total = 0;
   let pieces = 0;
   for (const item of env.items) {
-    const product = CATALOG.find((p) => p.code === item.productCode);
+    const product = catalog.find((p) => p.code === item.productCode);
     const price = item.unitPrice ?? product?.price ?? 0;
     total += price * item.qty;
     pieces += item.qty;
@@ -41,11 +41,11 @@ function envSubtotal(env: Environment): { total: number; pieces: number } {
 function quoteTotals(q: {
   environments: Environment[];
   discount?: number;
-}): { subtotal: number; pieces: number; total: number } {
+}, catalog: Product[]): { subtotal: number; pieces: number; total: number } {
   let subtotal = 0;
   let pieces = 0;
   for (const env of q.environments) {
-    const s = envSubtotal(env);
+    const s = envSubtotal(env, catalog);
     subtotal += s.total;
     pieces += s.pieces;
   }
@@ -79,7 +79,7 @@ export default function OrcamentoPage() {
 
   const isEditing = editingId !== null;
 
-  const totals = useMemo(() => quoteTotals({ environments, discount }), [environments, discount]);
+  const totals = useMemo(() => quoteTotals({ environments, discount }, catalog), [environments, discount, catalog]);
 
   function showToast(msg: string) {
     setToast(msg);
@@ -91,12 +91,12 @@ export default function OrcamentoPage() {
     setNumber(q.number);
     setStatus(q.status);
     setClientId(q.clientId);
-    setClientName(q.clientName || CLIENTS.find((c) => c.id === q.clientId)?.name || "");
-    setClientDocument(q.clientDocument || CLIENTS.find((c) => c.id === q.clientId)?.document || "");
-    setClientPhone(q.clientPhone || CLIENTS.find((c) => c.id === q.clientId)?.phone || "");
-    setClientAddress(q.clientAddress || CLIENTS.find((c) => c.id === q.clientId)?.address || "");
-    setClientCity(q.clientCity || CLIENTS.find((c) => c.id === q.clientId)?.city || "");
-    setClientArchitect(q.clientArchitect || CLIENTS.find((c) => c.id === q.clientId)?.architect || "");
+    setClientName(q.clientName || clients.find((c) => c.id === q.clientId)?.name || "");
+    setClientDocument(q.clientDocument || clients.find((c) => c.id === q.clientId)?.document || "");
+    setClientPhone(q.clientPhone || clients.find((c) => c.id === q.clientId)?.phone || "");
+    setClientAddress(q.clientAddress || clients.find((c) => c.id === q.clientId)?.address || "");
+    setClientCity(q.clientCity || clients.find((c) => c.id === q.clientId)?.city || "");
+    setClientArchitect(q.clientArchitect || clients.find((c) => c.id === q.clientId)?.architect || "");
     setEnvironments(JSON.parse(JSON.stringify(q.environments)));
     setDeliveryTime(q.deliveryTime || "90 DIAS");
     setValidity(q.validity || "15 dias");
@@ -334,7 +334,7 @@ export default function OrcamentoPage() {
             <option value="">— Selecionar orçamento salvo —</option>
             {quotes.map((q) => (
               <option key={q.id} value={q.id}>
-                {q.number} — {q.clientName || CLIENTS.find((c) => c.id === q.clientId)?.name || "Cliente"}
+                {q.number} — {q.clientName || clients.find((c) => c.id === q.clientId)?.name || "Cliente"}
               </option>
             ))}
           </select>
@@ -436,7 +436,7 @@ export default function OrcamentoPage() {
         )}
 
         {environments.map((env, ei) => {
-          const sub = envSubtotal(env);
+          const sub = envSubtotal(env, catalog);
           return (
             <div key={ei} className="bg-card border border-border rounded-2xl overflow-hidden mb-4">
               {/* Env header */}

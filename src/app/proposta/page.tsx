@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
-import { CATALOG, CLIENTS, brl, type Quote } from "@/lib/constants";
+import { CATALOG, CLIENTS, brl, type Product, type Client, type Quote } from "@/lib/constants";
 import { useLocalCollection } from "@/lib/store";
 
 const PAYMENT_LABELS: Record<string, string> = {
@@ -20,24 +20,26 @@ function formatDatePtBR(d: string) {
   return `${date.getDate()} de ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
 }
 
-function envSubtotal(env: Quote["environments"][0]): number {
+function envSubtotal(env: Quote["environments"][0], catalog: Product[]) {
   return env.items.reduce((sum, item) => {
-    const product = CATALOG.find((p) => p.code === item.productCode);
+    const product = catalog.find((p) => p.code === item.productCode);
     const price = item.unitPrice ?? product?.price ?? 0;
     return sum + price * item.qty;
   }, 0);
 }
 
-function quoteTotalPieces(q: Quote): number {
+function quoteTotalPieces(q: Quote) {
   return q.environments.reduce((s, e) => s + e.items.reduce((s2, i) => s2 + i.qty, 0), 0);
 }
 
-function quoteSubtotal(q: Quote): number {
-  return q.environments.reduce((s, e) => s + envSubtotal(e), 0);
+function quoteSubtotal(q: Quote, catalog: Product[]) {
+  return q.environments.reduce((s, e) => s + envSubtotal(e, catalog), 0);
 }
 
 export default function PropostaPage() {
   const [quotes] = useLocalCollection<Quote>("mendes-quotes", []);
+  const [catalog] = useLocalCollection<Product>("mendes-catalog", CATALOG);
+  const [clients] = useLocalCollection<Client>("mendes-clients", CLIENTS);
   const [selectedId, setSelectedId] = useState("");
 
   useEffect(() => {
@@ -51,9 +53,9 @@ export default function PropostaPage() {
     [quotes, selectedId]
   );
 
-  const client = quote ? CLIENTS.find((c) => c.id === quote.clientId) : null;
+  const client = quote ? clients.find((c) => c.id === quote.clientId) : null;
 
-  const subtotal = quote ? quoteSubtotal(quote) : 0;
+  const subtotal = quote ? quoteSubtotal(quote, catalog) : 0;
   const discount = quote?.discount ?? 0;
   const total = subtotal - discount;
   const pieces = quote ? quoteTotalPieces(quote) : 0;
@@ -104,7 +106,7 @@ export default function PropostaPage() {
             >
               {quotes.map((q) => (
                 <option key={q.id} value={q.id}>
-                  {q.number} — {q.clientName || CLIENTS.find((c) => c.id === q.clientId)?.name || "Cliente"}
+                  {q.number} — {q.clientName || clients.find((c) => c.id === q.clientId)?.name || "Cliente"}
                 </option>
               ))}
             </select>
@@ -190,7 +192,7 @@ export default function PropostaPage() {
                   </thead>
                   <tbody>
                     {env.items.map((item, ii) => {
-                      const product = CATALOG.find((p) => p.code === item.productCode);
+                      const product = catalog.find((p) => p.code === item.productCode);
                       const unitPrice = item.unitPrice ?? product?.price ?? 0;
                       return (
                         <tr key={ii}>
@@ -217,7 +219,7 @@ export default function PropostaPage() {
                     })}
                     <tr className="subt">
                       <td colSpan={7} style={{ textAlign: "right" }}>SUBTOTAL</td>
-                      <td>{brl(envSubtotal(env))}</td>
+                      <td>{brl(envSubtotal(env, catalog))}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -292,11 +294,7 @@ export default function PropostaPage() {
           padding-bottom: 12px;
           margin-bottom: 14px;
         }
-        .paper .plogo {
-          display: flex;
-          gap: 10px;
-          align-items: center;
-        }
+        .paper .plogo { display: flex; gap: 10px; align-items: center; }
         .paper .plogo img { height: 46px; width: 46px; object-fit: contain; }
         .paper .plogo h2 { font-family: 'Playfair Display', serif; font-size: 20px; letter-spacing: 2px; color: #0A0A0A; margin: 0; }
         .paper .co-tag { font-size: 9px; letter-spacing: 3px; color: #8a6d1a; }
