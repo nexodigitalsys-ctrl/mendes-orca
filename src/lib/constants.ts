@@ -13,6 +13,7 @@ export interface Client {
   type: "condominium" | "architect" | "person";
   document?: string;
   phone?: string;
+  email?: string;
   address?: string;
   city?: string;
   architect?: string;

@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 
-export function useLocalCollection<T extends { code: string }>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useLocalCollection<T extends { [key: string]: any }>(
   key: string,
   seed: T[]
 ): [T[], (updater: T[] | ((prev: T[]) => T[])) => void] {
