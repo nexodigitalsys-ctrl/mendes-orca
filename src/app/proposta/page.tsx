@@ -253,23 +253,28 @@ export default function PropostaPage() {
 
       {/* Print styles */}
       <style>{`
+        @page { size: A4 landscape; margin: 8mm; }
+
         @media print {
+          html, body { width: 100% !important; margin: 0 !important; padding: 0 !important; }
           .print-hide, header, nav, aside { display: none !important; }
-          main { padding-left: 0 !important; padding-bottom: 0 !important; }
+          main { padding-left: 0 !important; padding-bottom: 0 !important; margin-left: 0 !important; }
           .paper-wrap { overflow: visible !important; }
           .paper {
             min-width: 0 !important;
+            max-width: none !important;
             width: 100% !important;
+            box-sizing: border-box !important;
             box-shadow: none !important;
             border: none !important;
             border-radius: 0 !important;
             margin: 0 !important;
-            padding: 20px !important;
+            padding: 12px !important;
             font-size: 10pt !important;
           }
 
           /* TABLE */
-          .paper table { table-layout: fixed !important; width: 100% !important; border-collapse: collapse !important; }
+          .paper table { table-layout: fixed !important; width: 100% !important; border-collapse: collapse !important; max-width: none !important; }
           .paper table thead { display: table-header-group !important; }
           .paper table tbody { display: table-row-group !important; }
           .paper table tbody tr,
