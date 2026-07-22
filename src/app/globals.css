@@ -14,8 +14,25 @@
   --font-sans: "Inter", sans-serif;
 }
 
+[data-theme="light"] {
+  --color-bg: #F7F4EC;
+  --color-bg2: #FFFFFF;
+  --color-card: #FFFFFF;
+  --color-border: #E5DDC8;
+  --color-gold: #8a6d1a;
+  --color-gold-h: #C9A227;
+  --color-gold-d: #B8911F;
+  --color-text: #1A1A1A;
+  --color-text2: #6B6B6B;
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
+}
+
+[data-theme="light"] body {
+  background: var(--color-bg);
+  color: var(--color-text);
 }
