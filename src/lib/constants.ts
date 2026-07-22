@@ -19,11 +19,12 @@ export interface Client {
   architect?: string;
 }
 
-export type QuoteStatus = "aprovado" | "enviado" | "rascunho";
+export type QuoteStatus = "aprovado" | "enviado" | "rascunho" | "recusado";
 
 export interface QuoteItem {
   productCode: string;
   qty: number;
+  unitPrice?: number;
 }
 
 export interface Environment {
@@ -38,6 +39,16 @@ export interface Quote {
   status: QuoteStatus;
   environments: Environment[];
   createdAt: string;
+  clientName?: string;
+  clientDocument?: string;
+  clientPhone?: string;
+  clientAddress?: string;
+  clientCity?: string;
+  clientArchitect?: string;
+  deliveryTime?: string;
+  validity?: string;
+  paymentMethods?: string[];
+  discount?: number;
 }
 
 export const CATALOG: Product[] = [
