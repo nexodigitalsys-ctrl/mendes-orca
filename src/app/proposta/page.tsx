@@ -146,7 +146,7 @@ export default function PropostaPage() {
           <div className="paper">
             {/* Header */}
             <div className="ph">
-              <div className="plogo">
+              <div className="plogo" style={{ flex: "0 0 60%" }}>
                 {company.logo ? (
                   /* eslint-disable-next-line @next/next/no-img-element */
                   <img src={company.logo} alt={company.name} width={46} height={46} style={{ objectFit: "contain" }} />
@@ -156,13 +156,14 @@ export default function PropostaPage() {
                 <div>
                   <h2>{company.name?.split(" MÓVEIS")[0] || "MENDES DESIGN"}</h2>
                   <span className="company-slogan">MÓVEIS PARA ÁREAS EXTERNAS</span>
-                  {company.cnpj && <div style={{ fontSize: "9px", color: "#555" }}>CNPJ: {company.cnpj}</div>}
+                  {company.cnpj && <div style={{ fontSize: "9px", color: "#555", marginTop: 2 }}>CNPJ: {company.cnpj}</div>}
+                  {company.address && <div style={{ fontSize: "9px", color: "#555" }}>{company.address}</div>}
+                  {(company.city || company.state) && <div style={{ fontSize: "9px", color: "#555" }}>{company.city}{company.state ? ` - ${company.state}` : ""}</div>}
+                  {company.email && <div style={{ fontSize: "9px", color: "#555" }}>{company.email}</div>}
                 </div>
               </div>
-              <div className="co">
+              <div className="co" style={{ flex: "0 0 40%", textAlign: "right" }}>
                 {company.phone && <>{company.phone}<br /></>}
-                {company.city && company.state && <>{company.city} - {company.state}<br /></>}
-                {company.email && <>{company.email}<br /></>}
                 {formatDatePtBR(quote.createdAt)}<br />
                 <b className="co-number">{quote.number}</b>
               </div>
@@ -261,14 +262,14 @@ export default function PropostaPage() {
 
       {/* All styles */}
       <style>{`
-        @page { size: A4; margin: 5mm 6mm; }
+        @page { size: A4; margin: 5mm 10mm; }
 
         /* ===== PAPER BASE (always light, always visible) ===== */
         .paper {
           background: #fff !important;
           color: #1a1a1a !important;
           border-radius: 8px;
-          padding: 10px 6px;
+          padding: 10px 12px;
           font-size: 12px;
           line-height: 1.45;
           font-family: 'Inter', sans-serif;
@@ -365,7 +366,7 @@ export default function PropostaPage() {
             border: none !important;
             border-radius: 0 !important;
             margin: 0 !important;
-            padding: 6px !important;
+            padding: 10px 12px;
             font-size: 8pt !important;
             background: #fff !important;
             color: #1a1a1a !important;
@@ -441,12 +442,13 @@ export default function PropostaPage() {
             font-weight: 600 !important;
             color: #0A0A0A !important;
             font-size: 9pt !important;
-            padding: 6px 10px !important;
+            padding: 6px 12px !important;
             border-top: 2px solid #C9A227 !important;
             border-bottom: none !important;
             text-align: right !important;
           }
-          .paper .subt td:first-child { text-align: right !important; font-weight: 700 !important; padding-right: 8px !important; }
+          .paper .subt td:first-child { text-align: right !important; font-weight: 700 !important; padding-right: 12px !important; }
+          .paper .subt td:last-child { min-width: 120px !important; }
 
           /* GRAND TOTAL */
           .paper .grand {
@@ -455,12 +457,13 @@ export default function PropostaPage() {
             align-items: center !important;
             background: #1a1a1a !important;
             color: #C9A227 !important;
-            padding: 8px 10px !important;
+            padding: 8px 12px !important;
             border-radius: 4px !important;
             margin-top: 8px !important;
             font-weight: 700 !important;
             font-size: 10pt !important;
           }
+          .paper .grand span:last-child { min-width: 140px !important; text-align: right !important; }
 
           /* AREA BAR */
           .paper .area-t {
