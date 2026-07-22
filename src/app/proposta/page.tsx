@@ -269,12 +269,17 @@ export default function PropostaPage() {
             border: none !important;
             border-radius: 0 !important;
             margin: 0 !important;
-            padding: 12px !important;
+            padding: 0 !important;
             font-size: 10pt !important;
           }
 
           /* TABLE */
-          .paper table { table-layout: fixed !important; width: 100% !important; border-collapse: collapse !important; max-width: none !important; }
+          .paper table {
+            table-layout: fixed !important;
+            width: 100% !important;
+            border-collapse: collapse !important;
+            max-width: none !important;
+          }
           .paper table thead { display: table-header-group !important; }
           .paper table tbody { display: table-row-group !important; }
           .paper table tbody tr,
@@ -283,54 +288,92 @@ export default function PropostaPage() {
           /* THEAD — dark header, gold text */
           .paper th {
             display: table-cell !important;
+            box-sizing: border-box !important;
             background: #1a1a1a !important;
             color: #C9A227 !important;
             font-weight: 600 !important;
             font-size: 8pt !important;
             text-transform: uppercase !important;
             letter-spacing: 0.5px !important;
-            padding: 8px 6px !important;
+            padding: 6px 4px !important;
             text-align: left !important;
             white-space: nowrap !important;
             border: none !important;
+            vertical-align: middle !important;
           }
-          .paper th:nth-child(1),
-          .paper th:nth-child(2),
-          .paper th:nth-child(7),
-          .paper th:nth-child(8) { text-align: center !important; }
 
-          /* TD — table-cell forced, striped rows */
+          /* TD — table-cell forced */
           .paper td {
             display: table-cell !important;
+            box-sizing: border-box !important;
             vertical-align: middle !important;
-            padding: 8px 6px !important;
+            padding: 6px 4px !important;
             font-size: 9pt !important;
             white-space: normal !important;
             word-wrap: break-word !important;
             border: none !important;
             border-bottom: 1px solid #e5ddc8 !important;
           }
+
+          /* ZEBRADO */
           .paper tbody tr:nth-child(even) td { background: #f8f6f1 !important; }
           .paper tbody tr:nth-child(odd) td { background: #ffffff !important; }
-          .paper td:nth-child(1),
-          .paper td:nth-child(2),
-          .paper td:nth-child(7),
-          .paper td:nth-child(8) { white-space: nowrap !important; }
-          .paper td:nth-child(1),
-          .paper td:nth-child(2) { text-align: center !important; }
-          .paper td:nth-child(7),
-          .paper td:nth-child(8) { text-align: right !important; }
-          .paper td:nth-child(8) { font-weight: 700 !important; }
 
-          /* Column widths — portrait 186mm */
-          .paper th:nth-child(1), .paper td:nth-child(1) { width: 4% !important; }
-          .paper th:nth-child(2), .paper td:nth-child(2) { width: 5% !important; }
-          .paper th:nth-child(3), .paper td:nth-child(3) { width: 20% !important; }
-          .paper th:nth-child(4), .paper td:nth-child(4) { width: 10% !important; text-align: center !important; }
-          .paper th:nth-child(5), .paper td:nth-child(5) { width: 25% !important; text-align: justify !important; font-size: 8pt !important; line-height: 1.3 !important; }
-          .paper th:nth-child(6), .paper td:nth-child(6) { width: 16% !important; text-align: center !important; }
-          .paper th:nth-child(7), .paper td:nth-child(7) { width: 10% !important; }
-          .paper th:nth-child(8), .paper td:nth-child(8) { width: 10% !important; }
+          /* COLUMN WIDTHS — sum 100% */
+          .paper th:nth-child(1), .paper td:nth-child(1) { width: 5% !important; text-align: center !important; white-space: nowrap !important; }
+          .paper th:nth-child(2), .paper td:nth-child(2) { width: 6% !important; text-align: center !important; white-space: nowrap !important; }
+          .paper th:nth-child(3), .paper td:nth-child(3) { width: 22% !important; text-align: left !important; padding-left: 6px !important; }
+          .paper th:nth-child(4), .paper td:nth-child(4) { width: 10% !important; text-align: center !important; white-space: nowrap !important; font-size: 9pt !important; }
+          .paper th:nth-child(5), .paper td:nth-child(5) { width: 24% !important; text-align: left !important; font-size: 8pt !important; line-height: 1.3 !important; }
+          .paper th:nth-child(6), .paper td:nth-child(6) { width: 15% !important; text-align: center !important; }
+          .paper th:nth-child(7), .paper td:nth-child(7) { width: 10% !important; text-align: right !important; white-space: nowrap !important; padding-right: 8px !important; }
+          .paper th:nth-child(8), .paper td:nth-child(8) { width: 10% !important; text-align: right !important; white-space: nowrap !important; padding-right: 8px !important; font-weight: 700 !important; }
+
+          /* CODE bold, name normal */
+          .paper td:nth-child(3) b { font-size: 9pt !important; }
+          .paper td:nth-child(3) { line-height: 1.4 !important; }
+
+          /* PHOTOS */
+          .paper .td-img img { max-height: 70px !important; width: auto !important; object-fit: contain !important; border: 1px solid #e5ddc8 !important; border-radius: 3px !important; }
+          .paper .placeholder-img { font-size: 20pt !important; color: #C9A227 !important; }
+
+          /* SUBTOTAL ROW */
+          .paper .subt td {
+            background: #F7F4EC !important;
+            font-weight: 700 !important;
+            color: #0A0A0A !important;
+            font-size: 10pt !important;
+            padding: 8px 12px !important;
+            border-top: 2px solid #C9A227 !important;
+            border-bottom: none !important;
+            text-align: right !important;
+          }
+
+          /* GRAND TOTAL BAR */
+          .paper .grand {
+            display: flex !important;
+            justify-content: space-between !important;
+            background: #1a1a1a !important;
+            color: #C9A227 !important;
+            padding: 10px 12px !important;
+            border-radius: 4px !important;
+            margin-top: 12px !important;
+            font-weight: 700 !important;
+            font-size: 10.5pt !important;
+          }
+
+          /* AREA ENVIRONMENT BAR */
+          .paper .area-t {
+            background: linear-gradient(90deg, #C9A227, #B8911F) !important;
+            color: #1a1a1a !important;
+            padding: 5px 10px !important;
+            font-weight: 700 !important;
+            margin-bottom: 0 !important;
+          }
+
+          body { background: white !important; }
+          .paper .cli { background: #F7F4EC !important; }
+        }
 
           /* Code bold, name normal */
           .paper td:nth-child(3) b { font-size: 9pt !important; }
