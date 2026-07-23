@@ -262,14 +262,14 @@ export default function PropostaPage() {
 
       {/* All styles */}
       <style>{`
-        @page { size: A4; margin: 5mm 10mm; }
+        @page { size: A4; margin: 4mm 5mm; }
 
         /* ===== PAPER BASE (always light, always visible) ===== */
         .paper {
           background: #fff !important;
           color: #1a1a1a !important;
           border-radius: 8px;
-          padding: 10px 12px;
+          padding: 8px 6px;
           font-size: 12px;
           line-height: 1.45;
           font-family: 'Inter', sans-serif;
@@ -366,7 +366,7 @@ export default function PropostaPage() {
             border: none !important;
             border-radius: 0 !important;
             margin: 0 !important;
-            padding: 10px 12px;
+            padding: 8px 6px;
             font-size: 8pt !important;
             background: #fff !important;
             color: #1a1a1a !important;
@@ -424,8 +424,8 @@ export default function PropostaPage() {
           .paper th:nth-child(4), .paper td:nth-child(4) { width: 13% !important; text-align: center !important; font-size: 7pt !important; line-height: 1.15 !important; word-break: break-all !important; padding: 4px 3px !important; }
           .paper th:nth-child(5), .paper td:nth-child(5) { width: 23% !important; text-align: left !important; font-size: 7.5pt !important; line-height: 1.25 !important; padding: 4px 4px !important; }
           .paper th:nth-child(6), .paper td:nth-child(6) { width: 14% !important; text-align: center !important; padding: 4px 2px !important; }
-          .paper th:nth-child(7), .paper td:nth-child(7) { width: 10% !important; text-align: right !important; white-space: nowrap !important; padding: 4px 4px !important; font-size: 7.5pt !important; }
-          .paper th:nth-child(8), .paper td:nth-child(8) { width: 11% !important; text-align: right !important; white-space: nowrap !important; padding: 4px 4px !important; font-weight: 700 !important; font-size: 8pt !important; }
+          .paper th:nth-child(7), .paper td:nth-child(7) { width: 11% !important; text-align: right !important; white-space: nowrap !important; padding: 4px 4px !important; font-size: 7.5pt !important; letter-spacing: -0.3px !important; min-width: 90px !important; }
+          .paper th:nth-child(8), .paper td:nth-child(8) { width: 12% !important; text-align: right !important; white-space: nowrap !important; padding: 4px 4px !important; font-weight: 700 !important; font-size: 7.5pt !important; letter-spacing: -0.3px !important; min-width: 100px !important; }
 
           /* CODE bold, name smaller */
           .paper td:nth-child(3) b { font-size: 8pt !important; font-weight: 700 !important; }
