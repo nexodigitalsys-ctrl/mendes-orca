@@ -221,14 +221,14 @@ export default function PropostaPage() {
                               <span className="placeholder-img">🪑</span>
                             )}
                           </td>
-                          <td data-label="Unit." className="val-cell">{brl(unitPrice).replace("R$", "")}<span className="curr">R$</span></td>
-                          <td data-label="Total" className="val-cell">{brl(unitPrice * item.qty).replace("R$", "")}<span className="curr">R$</span></td>
+                          <td data-label="Unit." className="val-cell"><span className="curr">R$</span>{brl(unitPrice).replace("R$", "").trim()}</td>
+                          <td data-label="Total" className="val-cell"><span className="curr">R$</span>{brl(unitPrice * item.qty).replace("R$", "").trim()}</td>
                         </tr>
                       );
                     })}
                     <tr className="subt">
                       <td colSpan={7} style={{ textAlign: "right" }}>SUBTOTAL</td>
-                      <td className="val-cell">{brl(envSubtotal(env, catalog)).replace("R$", "")}<span className="curr">R$</span></td>
+                      <td className="val-cell"><span className="curr">R$</span>{brl(envSubtotal(env, catalog)).replace("R$", "").trim()}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -418,8 +418,8 @@ export default function PropostaPage() {
           .paper tbody tr:nth-child(odd) td { background: #ffffff !important; }
 
           /* COLUMN WIDTHS — redistribuidas para TOTAL não cortar (soma 100%) */
-          .paper th:nth-child(1), .paper td:nth-child(1) { width: 3% !important; text-align: center !important; white-space: nowrap !important; padding: 2px 1px !important; font-size: 7.5pt !important; }
-          .paper th:nth-child(2), .paper td:nth-child(2) { width: 4% !important; text-align: center !important; white-space: nowrap !important; padding: 2px 1px !important; font-size: 7.5pt !important; }
+          .paper th:nth-child(1), .paper td:nth-child(1) { width: 3% !important; text-align: center !important; white-space: nowrap !important; padding: 4px 3px !important; font-size: 7.5pt !important; }
+          .paper th:nth-child(2), .paper td:nth-child(2) { width: 4% !important; text-align: center !important; white-space: nowrap !important; padding: 4px 3px !important; font-size: 7.5pt !important; }
           .paper th:nth-child(3), .paper td:nth-child(3) { width: 18% !important; text-align: left !important; padding: 4px 3px !important; font-size: 7.5pt !important; }
           .paper th:nth-child(4), .paper td:nth-child(4) { width: 10% !important; text-align: center !important; font-size: 7pt !important; line-height: 1.15 !important; word-break: break-all !important; padding: 3px 2px !important; }
           .paper th:nth-child(5), .paper td:nth-child(5) { width: 22% !important; text-align: left !important; font-size: 7pt !important; line-height: 1.2 !important; padding: 4px 3px !important; }
@@ -437,7 +437,7 @@ export default function PropostaPage() {
           .paper td:nth-child(3) br + * { font-size: 7.5pt !important; color: #555 !important; }
 
           /* PHOTOS — reduced height for horizontal space */
-          .paper .td-img img { max-height: 55px !important; width: auto !important; object-fit: contain !important; border: 1px solid #e5ddc8 !important; border-radius: 3px !important; }
+          .paper .td-img img { max-height: 65px !important; width: auto !important; object-fit: contain !important; border: 1px solid #e5ddc8 !important; border-radius: 3px !important; }
           .paper .placeholder-img { font-size: 20pt !important; color: #C9A227 !important; }
 
           /* SUBTOTAL */
