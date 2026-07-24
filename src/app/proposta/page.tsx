@@ -221,14 +221,14 @@ export default function PropostaPage() {
                               <span className="placeholder-img">🪑</span>
                             )}
                           </td>
-                          <td data-label="Unit.">{brl(unitPrice)}</td>
-                          <td data-label="Total">{brl(unitPrice * item.qty)}</td>
+                          <td data-label="Unit." className="val-cell">{brl(unitPrice).replace("R$", "")}<span className="curr">R$</span></td>
+                          <td data-label="Total" className="val-cell">{brl(unitPrice * item.qty).replace("R$", "")}<span className="curr">R$</span></td>
                         </tr>
                       );
                     })}
                     <tr className="subt">
                       <td colSpan={7} style={{ textAlign: "right" }}>SUBTOTAL</td>
-                      <td>{brl(envSubtotal(env, catalog))}</td>
+                      <td className="val-cell">{brl(envSubtotal(env, catalog)).replace("R$", "")}<span className="curr">R$</span></td>
                     </tr>
                   </tbody>
                 </table>
@@ -417,23 +417,27 @@ export default function PropostaPage() {
           .paper tbody tr:nth-child(even) td { background: #f5f3ed !important; }
           .paper tbody tr:nth-child(odd) td { background: #ffffff !important; }
 
-          /* COLUMN WIDTHS — recalculated for 3D measures */
-          .paper th:nth-child(1), .paper td:nth-child(1) { width: 5% !important; text-align: center !important; white-space: nowrap !important; padding: 4px 2px !important; }
-          .paper th:nth-child(2), .paper td:nth-child(2) { width: 6% !important; text-align: center !important; white-space: nowrap !important; padding: 4px 2px !important; }
-          .paper th:nth-child(3), .paper td:nth-child(3) { width: 20% !important; text-align: left !important; padding: 4px 4px !important; }
-          .paper th:nth-child(4), .paper td:nth-child(4) { width: 13% !important; text-align: center !important; font-size: 7pt !important; line-height: 1.15 !important; word-break: break-all !important; padding: 4px 3px !important; }
-          .paper th:nth-child(5), .paper td:nth-child(5) { width: 23% !important; text-align: left !important; font-size: 7.5pt !important; line-height: 1.25 !important; padding: 4px 4px !important; }
-          .paper th:nth-child(6), .paper td:nth-child(6) { width: 14% !important; text-align: center !important; padding: 4px 2px !important; }
-          .paper th:nth-child(7), .paper td:nth-child(7) { width: 11% !important; text-align: right !important; white-space: nowrap !important; padding: 4px 4px !important; font-size: 7.5pt !important; letter-spacing: -0.3px !important; min-width: 90px !important; }
-          .paper th:nth-child(8), .paper td:nth-child(8) { width: 12% !important; text-align: right !important; white-space: nowrap !important; padding: 4px 4px !important; font-weight: 700 !important; font-size: 7.5pt !important; letter-spacing: -0.3px !important; min-width: 100px !important; }
+          /* COLUMN WIDTHS — redistribuidas para TOTAL não cortar (soma 100%) */
+          .paper th:nth-child(1), .paper td:nth-child(1) { width: 3% !important; text-align: center !important; white-space: nowrap !important; padding: 2px 1px !important; font-size: 7.5pt !important; }
+          .paper th:nth-child(2), .paper td:nth-child(2) { width: 4% !important; text-align: center !important; white-space: nowrap !important; padding: 2px 1px !important; font-size: 7.5pt !important; }
+          .paper th:nth-child(3), .paper td:nth-child(3) { width: 18% !important; text-align: left !important; padding: 4px 3px !important; font-size: 7.5pt !important; }
+          .paper th:nth-child(4), .paper td:nth-child(4) { width: 10% !important; text-align: center !important; font-size: 7pt !important; line-height: 1.15 !important; word-break: break-all !important; padding: 3px 2px !important; }
+          .paper th:nth-child(5), .paper td:nth-child(5) { width: 22% !important; text-align: left !important; font-size: 7pt !important; line-height: 1.2 !important; padding: 4px 3px !important; }
+          .paper th:nth-child(6), .paper td:nth-child(6) { width: 12% !important; text-align: center !important; padding: 2px !important; }
+          .paper th:nth-child(7), .paper td:nth-child(7) { width: 12% !important; text-align: right !important; white-space: nowrap !important; padding: 3px 4px !important; font-size: 7pt !important; }
+          .paper th:nth-child(8), .paper td:nth-child(8) { width: 15% !important; text-align: right !important; white-space: nowrap !important; padding: 3px 4px !important; font-weight: 700 !important; font-size: 7.5pt !important; }
+
+          /* R$ SUPERScript */
+          .paper .curr { font-size: 6pt !important; vertical-align: super !important; margin-right: 1px !important; }
+          .paper .val-cell { font-size: 7.5pt !important; font-weight: 600 !important; letter-spacing: -0.2px !important; }
 
           /* CODE bold, name smaller */
           .paper td:nth-child(3) b { font-size: 8pt !important; font-weight: 700 !important; }
           .paper td:nth-child(3) { line-height: 1.2 !important; }
           .paper td:nth-child(3) br + * { font-size: 7.5pt !important; color: #555 !important; }
 
-          /* PHOTOS */
-          .paper .td-img img { height: 70px !important; width: auto !important; object-fit: contain !important; border: 1px solid #e5ddc8 !important; border-radius: 3px !important; }
+          /* PHOTOS — reduced height for horizontal space */
+          .paper .td-img img { max-height: 55px !important; width: auto !important; object-fit: contain !important; border: 1px solid #e5ddc8 !important; border-radius: 3px !important; }
           .paper .placeholder-img { font-size: 20pt !important; color: #C9A227 !important; }
 
           /* SUBTOTAL */
