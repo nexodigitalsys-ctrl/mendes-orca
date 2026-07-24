@@ -147,21 +147,19 @@ export default function PropostaPage() {
             {/* Header */}
             <div className="ph">
               <div className="plogo" style={{ flex: "0 0 60%" }}>
-                <div style={{ height: 45, overflow: "hidden", flex: "0 0 auto" }}>
-                  {company.logo ? (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img src={company.logo} alt={company.name} style={{ maxHeight: 40, width: "auto", objectFit: "contain" }} />
-                  ) : (
-                    <div style={{ width: 40, height: 40, borderRadius: "50%", background: "#C9A227", color: "#0A0A0A", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 14 }}>MD</div>
-                  )}
-                </div>
-                <div>
+                {company.logo ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img src={company.logo} alt={company.name} className="plogo-img" />
+                ) : (
+                  <div className="plogo-fallback">MD</div>
+                )}
+                <div className="plogo-info">
                   <h2>{company.name?.split(" MÓVEIS")[0] || "MENDES DESIGN"}</h2>
                   <span className="company-slogan">MÓVEIS PARA ÁREAS EXTERNAS</span>
-                  {company.cnpj && <div style={{ fontSize: "9px", color: "#555", marginTop: 2 }}>CNPJ: {company.cnpj}</div>}
-                  {company.address && <div style={{ fontSize: "9px", color: "#555" }}>{company.address}</div>}
-                  {(company.city || company.state) && <div style={{ fontSize: "9px", color: "#555" }}>{company.city}{company.state ? ` - ${company.state}` : ""}</div>}
-                  {company.email && <div style={{ fontSize: "9px", color: "#555" }}>{company.email}</div>}
+                  {company.cnpj && <div className="plogo-detail">CNPJ: {company.cnpj}</div>}
+                  {company.address && <div className="plogo-detail">{company.address}</div>}
+                  {(company.city || company.state) && <div className="plogo-detail">{company.city}{company.state ? ` - ${company.state}` : ""}</div>}
+                  {company.email && <div className="plogo-detail">{company.email}</div>}
                 </div>
               </div>
               <div className="co" style={{ flex: "0 0 40%", textAlign: "right" }}>
@@ -291,10 +289,13 @@ export default function PropostaPage() {
           padding-bottom: 12px;
           margin-bottom: 14px;
         }
-        .paper .plogo { display: flex; gap: 10px; align-items: center; }
-        .paper .plogo img { height: 46px; width: 46px; object-fit: contain; }
-        .paper .plogo h2 { font-family: 'Playfair Display', serif; font-size: 16pt; letter-spacing: 2px; font-weight: 700; margin: 0; }
+        .paper .plogo { display: flex; gap: 10px; align-items: flex-start; }
+        .paper .plogo-img { max-height: 40px; width: auto; object-fit: contain; flex-shrink: 0; }
+        .paper .plogo-fallback { width: 40px; height: 40px; border-radius: 50%; background: #C9A227; color: #0A0A0A; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+        .paper .plogo-info { flex: 1; min-width: 0; }
+        .paper .plogo h2, .paper .plogo-info h2 { font-family: 'Playfair Display', serif; font-size: 16pt; letter-spacing: 2px; font-weight: 700; margin: 0; }
         .paper .company-slogan { font-size: 8pt; letter-spacing: 2px; text-transform: uppercase; color: #8a6d1a !important; margin-top: 2px; display: block; }
+        .paper .plogo-detail { font-size: 9px; color: #555 !important; margin-top: 1px; }
         .paper .co { font-size: 10px; color: #555 !important; text-align: right; line-height: 1.5; }
         .paper .co-number { color: #8a6d1a !important; }
         .paper .cli {
@@ -390,7 +391,7 @@ export default function PropostaPage() {
             font-size: 7pt !important;
             text-transform: uppercase !important;
             letter-spacing: 0.5px !important;
-            padding: 4px 2px !important;
+            padding: 4px 3px !important;
             text-align: left !important;
             white-space: nowrap !important;
             border: none !important;
