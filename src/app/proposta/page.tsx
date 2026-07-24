@@ -147,12 +147,14 @@ export default function PropostaPage() {
             {/* Header */}
             <div className="ph">
               <div className="plogo" style={{ flex: "0 0 60%" }}>
-                {company.logo ? (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={company.logo} alt={company.name} width={46} height={46} style={{ objectFit: "contain" }} />
-                ) : (
-                  <div style={{ width: 46, height: 46, borderRadius: "50%", background: "#C9A227", color: "#0A0A0A", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 16 }}>MD</div>
-                )}
+                <div style={{ height: 45, overflow: "hidden", flex: "0 0 auto" }}>
+                  {company.logo ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img src={company.logo} alt={company.name} style={{ maxHeight: 40, width: "auto", objectFit: "contain" }} />
+                  ) : (
+                    <div style={{ width: 40, height: 40, borderRadius: "50%", background: "#C9A227", color: "#0A0A0A", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 14 }}>MD</div>
+                  )}
+                </div>
                 <div>
                   <h2>{company.name?.split(" MÓVEIS")[0] || "MENDES DESIGN"}</h2>
                   <span className="company-slogan">MÓVEIS PARA ÁREAS EXTERNAS</span>
@@ -427,8 +429,8 @@ export default function PropostaPage() {
           .paper th:nth-child(7), .paper td:nth-child(7) { width: 12% !important; text-align: right !important; white-space: nowrap !important; padding: 3px 4px !important; font-size: 7pt !important; }
           .paper th:nth-child(8), .paper td:nth-child(8) { width: 15% !important; text-align: right !important; white-space: nowrap !important; padding: 3px 4px !important; font-weight: 700 !important; font-size: 7.5pt !important; }
 
-          /* R$ SUPERScript */
-          .paper .curr { font-size: 6pt !important; vertical-align: super !important; margin-right: 1px !important; }
+          /* R$ aligned */
+          .paper .curr { font-size: 6pt !important; margin-right: 1px !important; }
           .paper .val-cell { font-size: 7.5pt !important; font-weight: 600 !important; letter-spacing: -0.2px !important; }
 
           /* CODE bold, name smaller */
