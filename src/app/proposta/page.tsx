@@ -158,6 +158,10 @@ export default function PropostaPage() {
                   <span className="company-slogan">MÓVEIS PARA ÁREAS EXTERNAS</span>
                 </div>
               </div>
+              <div className="quote-number">
+                <span>Orçamento</span>
+                <b>{quote.number}</b>
+              </div>
             </div>
 
             {/* Company + Client cards */}
@@ -169,10 +173,7 @@ export default function PropostaPage() {
                 {(company.city || company.state) && <div>{company.city}{company.state ? ` - ${company.state}` : ""}</div>}
                 {company.phone && <div>{company.phone}</div>}
                 {company.cnpj && <div>CNPJ: {company.cnpj}</div>}
-                <div style={{ marginTop: "8px" }}>
-                  {formatDatePtBR(quote.createdAt)}<br />
-                  <b className="co-number">{quote.number}</b>
-                </div>
+                <div style={{ marginTop: "8px" }}>{formatDatePtBR(quote.createdAt)}</div>
               </div>
               <div className="info-card">
                 <div className="info-card-title">Cliente</div>
@@ -305,6 +306,9 @@ export default function PropostaPage() {
         .paper .plogo-info { flex: 1; min-width: 0; }
         .paper .plogo h2, .paper .plogo-info h2 { font-family: 'Playfair Display', serif; font-size: 18pt; letter-spacing: 2px; font-weight: 700; margin: 0; }
         .paper .company-slogan { font-size: 9pt; letter-spacing: 2px; text-transform: uppercase; color: #8a6d1a !important; margin-top: 2px; display: block; }
+        .paper .quote-number { text-align: right; display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+        .paper .quote-number span { font-size: 9pt; letter-spacing: 1px; text-transform: uppercase; color: #8a6d1a !important; }
+        .paper .quote-number b { font-family: 'Playfair Display', serif; font-size: 16pt; color: #0A0A0A !important; letter-spacing: 1px; }
 
         /* INFO CARDS */
         .paper .info-cards {
@@ -404,11 +408,16 @@ export default function PropostaPage() {
             padding-bottom: 10px !important;
             margin-bottom: 12px !important;
             gap: 10px !important;
+            justify-content: space-between !important;
+            align-items: center !important;
           }
           .paper .plogo-img { max-height: 48px !important; max-width: 48px !important; }
           .paper .plogo-fallback { width: 48px !important; height: 48px !important; font-size: 16px !important; }
           .paper .plogo h2 { font-size: 16pt !important; letter-spacing: 1.5px !important; }
           .paper .company-slogan { font-size: 8pt !important; }
+          .paper .quote-number { text-align: right !important; gap: 1px !important; }
+          .paper .quote-number span { font-size: 7.5pt !important; letter-spacing: 1px !important; }
+          .paper .quote-number b { font-size: 14pt !important; letter-spacing: 0.5px !important; }
 
           /* INFO CARDS */
           .paper .info-cards {
@@ -465,12 +474,12 @@ export default function PropostaPage() {
           /* COLUMN WIDTHS */
           .paper th:nth-child(1), .paper td:nth-child(1) { width: 4% !important; text-align: center !important; white-space: nowrap !important; padding: 5px 3px !important; }
           .paper th:nth-child(2), .paper td:nth-child(2) { width: 5% !important; text-align: center !important; white-space: nowrap !important; padding: 5px 3px !important; }
-          .paper th:nth-child(3), .paper td:nth-child(3) { width: 19% !important; text-align: left !important; padding: 5px 4px !important; }
-          .paper th:nth-child(4), .paper td:nth-child(4) { width: 10% !important; text-align: center !important; padding: 5px 3px !important; }
-          .paper th:nth-child(5), .paper td:nth-child(5) { width: 22% !important; text-align: left !important; padding: 5px 4px !important; line-height: 1.25 !important; }
-          .paper th:nth-child(6), .paper td:nth-child(6) { width: 15% !important; text-align: center !important; padding: 4px 3px !important; }
-          .paper th:nth-child(7), .paper td:nth-child(7) { width: 11% !important; text-align: right !important; white-space: nowrap !important; padding: 5px 4px !important; }
-          .paper th:nth-child(8), .paper td:nth-child(8) { width: 12% !important; text-align: right !important; white-space: nowrap !important; padding: 5px 4px !important; font-weight: 700 !important; }
+          .paper th:nth-child(3), .paper td:nth-child(3) { width: 18% !important; text-align: left !important; padding: 5px 4px !important; }
+          .paper th:nth-child(4), .paper td:nth-child(4) { width: 9% !important; text-align: center !important; padding: 5px 3px !important; }
+          .paper th:nth-child(5), .paper td:nth-child(5) { width: 20% !important; text-align: left !important; padding: 5px 4px !important; line-height: 1.25 !important; }
+          .paper th:nth-child(6), .paper td:nth-child(6) { width: 14% !important; text-align: center !important; padding: 4px 3px !important; }
+          .paper th:nth-child(7), .paper td:nth-child(7) { width: 13% !important; text-align: right !important; white-space: nowrap !important; padding: 5px 4px !important; }
+          .paper th:nth-child(8), .paper td:nth-child(8) { width: 14% !important; text-align: right !important; white-space: nowrap !important; padding: 5px 4px !important; font-weight: 700 !important; }
 
           /* HIDE MOBILE LABELS IN PRINT */
           .paper table tbody td::before { display: none !important; }
