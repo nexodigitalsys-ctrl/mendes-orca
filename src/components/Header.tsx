@@ -9,8 +9,8 @@ export default function Header() {
       <div className="flex items-center gap-3 px-4 py-3">
         <Image src="/logo-md.png" alt="Mendes" width={38} height={38} className="object-contain" />
         <div>
-          <div className="font-serif text-lg tracking-[3px] font-bold text-text">MENDES</div>
-          <div className="text-[10px] tracking-[4px] text-gold mt-[-1px]">ORÇA</div>
+          <div className="font-serif text-[15px] tracking-[2px] font-bold text-text">MENDES DESIGN</div>
+          <div className="text-[9px] tracking-[2px] text-gold mt-[-1px]">MÓVEIS PARA ÁREAS EXTERNAS</div>
         </div>
         <div className="ml-auto">
           <ThemeToggle />
