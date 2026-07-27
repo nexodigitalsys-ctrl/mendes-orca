@@ -178,7 +178,20 @@ function ReciboContent() {
 
           <div className="flex gap-2 mb-4">
             <button
-              onClick={() => window.print()}
+              onClick={async () => {
+                const images = Array.from(document.querySelectorAll<HTMLImageElement>(".paper img"));
+                await Promise.all(
+                  images.map(
+                    (img) =>
+                      new Promise<void>((resolve) => {
+                        if (img.complete && img.naturalHeight !== 0) return resolve();
+                        img.onload = () => resolve();
+                        img.onerror = () => resolve();
+                      })
+                  )
+                );
+                window.print();
+              }}
               className="flex-1 bg-gold text-bg font-bold border-none rounded-xl px-5 py-3 text-sm hover:bg-gold-d transition-colors"
             >
               ⬇️ Baixar PDF
@@ -209,10 +222,19 @@ function ReciboContent() {
             {/* Header — idêntico ao proposta */}
             <div className="ph">
               <div className="plogo">
-                {company.logo ? (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={company.logo} alt={company.name} width={46} height={46} style={{ objectFit: "contain" }} />
-                ) : (
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={company.logo || "/logo-md.png"}
+                  alt={company.name}
+                  width={46}
+                  height={46}
+                  style={{ objectFit: "contain" }}
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.style.display = "none";
+                  }}
+                />
+                {!company.logo && (
                   <div style={{ width: 46, height: 46, borderRadius: "50%", background: "#C9A227", color: "#0A0A0A", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 16 }}>MD</div>
                 )}
                 <div>

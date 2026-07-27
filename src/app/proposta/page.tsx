@@ -116,7 +116,20 @@ export default function PropostaPage() {
 
           <div className="flex gap-2 mb-4">
             <button
-              onClick={() => window.print()}
+              onClick={async () => {
+                const images = Array.from(document.querySelectorAll<HTMLImageElement>(".paper img"));
+                await Promise.all(
+                  images.map(
+                    (img) =>
+                      new Promise<void>((resolve) => {
+                        if (img.complete && img.naturalHeight !== 0) return resolve();
+                        img.onload = () => resolve();
+                        img.onerror = () => resolve();
+                      })
+                  )
+                );
+                window.print();
+              }}
               className="flex-1 bg-gold text-bg font-bold border-none rounded-xl px-5 py-3 text-sm hover:bg-gold-d transition-colors"
             >
               ⬇️ Baixar PDF
@@ -147,12 +160,20 @@ export default function PropostaPage() {
             {/* Header */}
             <div className="ph">
               <div className="plogo">
-                {company.logo ? (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img src={company.logo} alt={company.name} className="plogo-img" />
-                ) : (
-                  <div className="plogo-fallback">MD</div>
-                )}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={company.logo || "/logo-md.png"}
+                  alt={company.name}
+                  className="plogo-img"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.style.display = "none";
+                    const fallback = document.createElement("div");
+                    fallback.className = "plogo-fallback";
+                    fallback.textContent = "MD";
+                    target.parentElement?.appendChild(fallback);
+                  }}
+                />
                 <div className="plogo-info">
                   <h2>MENDES DESIGN</h2>
                   <span className="company-slogan">MÓVEIS PARA ÁREAS EXTERNAS</span>
@@ -419,6 +440,15 @@ export default function PropostaPage() {
           .paper .quote-number { text-align: right !important; gap: 1px !important; }
           .paper .quote-number span { font-size: 7.5pt !important; letter-spacing: 1px !important; }
           .paper .quote-number b { font-size: 14pt !important; letter-spacing: 0.5px !important; }
+
+          /* FORCE IMAGES TO PRINT */
+          .paper img {
+            display: inline-block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
 
           /* INFO CARDS */
           .paper .info-cards {

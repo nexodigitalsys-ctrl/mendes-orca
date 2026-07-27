@@ -29,8 +29,11 @@ export default function EmpresaPage() {
         }
         canvas.width = w;
         canvas.height = h;
-        canvas.getContext("2d")!.drawImage(img, 0, 0, w, h);
-        const compressed = canvas.toDataURL("image/jpeg", 0.8);
+        const ctx = canvas.getContext("2d")!;
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, w, h);
+        ctx.drawImage(img, 0, 0, w, h);
+        const compressed = canvas.toDataURL("image/png");
         setForm((f) => ({ ...f, logo: compressed }));
       };
       img.src = reader.result as string;
