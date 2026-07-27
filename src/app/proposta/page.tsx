@@ -306,9 +306,10 @@ export default function PropostaPage() {
         .paper .plogo-info { flex: 1; min-width: 0; }
         .paper .plogo h2, .paper .plogo-info h2 { font-family: 'Playfair Display', serif; font-size: 18pt; letter-spacing: 2px; font-weight: 700; margin: 0; }
         .paper .company-slogan { font-size: 9pt; letter-spacing: 2px; text-transform: uppercase; color: #8a6d1a !important; margin-top: 2px; display: block; }
-        .paper .quote-number { text-align: right; display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+        .paper .quote-number { text-align: right; display: flex; flex-direction: column; justify-content: center; gap: 2px; white-space: nowrap; }
         .paper .quote-number span { font-size: 9pt; letter-spacing: 1px; text-transform: uppercase; color: #8a6d1a !important; }
         .paper .quote-number b { font-family: 'Playfair Display', serif; font-size: 16pt; color: #0A0A0A !important; letter-spacing: 1px; }
+        .paper .curr { font-size: 8pt; margin-right: 3px; color: #8a6d1a !important; }
 
         /* INFO CARDS */
         .paper .info-cards {
@@ -552,6 +553,29 @@ export default function PropostaPage() {
 
         /* ===== MOBILE CARDS ===== */
         @media (max-width: 720px) {
+          .paper-wrap { overflow: visible; }
+          .paper-wrap .paper { min-width: 0; padding: 14px 12px; }
+
+          .paper .ph {
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-bottom: 10px;
+            margin-bottom: 12px;
+          }
+          .paper .quote-number {
+            width: 100%;
+            text-align: left !important;
+            flex-direction: row;
+            align-items: baseline;
+            gap: 8px;
+            white-space: nowrap;
+          }
+          .paper .quote-number span { font-size: 8pt !important; }
+          .paper .quote-number b { font-size: 12pt !important; }
+
+          .paper .info-cards { grid-template-columns: 1fr; gap: 10px; }
+          .paper .info-card { font-size: 10.5px; padding: 10px; }
+
           .paper table thead { display: none; }
           .paper table { min-width: 0; }
           .paper table tbody tr {
@@ -583,9 +607,17 @@ export default function PropostaPage() {
           }
           .paper .td-img { text-align: center; }
           .paper .td-img img { width: 100%; max-width: 200px; height: auto; }
-          .paper .cli { grid-template-columns: 1fr; }
-          .paper-wrap { overflow: visible; }
-          .paper-wrap .paper { min-width: 0; }
+          .paper .placeholder-box { width: 100%; max-width: 160px; height: 120px; }
+          .paper .placeholder-box svg { width: 40px; height: 40px; }
+          .paper .curr { margin-right: 3px; color: #8a6d1a !important; }
+          .paper .grand {
+            flex-direction: column;
+            gap: 4px;
+            text-align: center;
+            background: #0A0A0A !important;
+            color: #C9A227 !important;
+          }
+          .paper .grand span { color: #C9A227 !important; }
         }
       `}</style>
     </AppLayout>

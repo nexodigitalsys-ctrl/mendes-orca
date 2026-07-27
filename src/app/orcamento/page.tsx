@@ -322,14 +322,14 @@ export default function OrcamentoPage() {
         </p>
 
         {/* Select existing + new */}
-        <div className="flex gap-2 mb-4">
+        <div className="flex gap-2 mb-4 min-w-0">
           <select
             value={editingId || ""}
             onChange={(e) => {
               const q = quotes.find((qq) => qq.id === e.target.value);
               if (q) loadQuote(q);
             }}
-            className="flex-1 bg-bg2 border border-border rounded-[10px] text-text p-[11px_12px] text-sm outline-none focus:border-gold"
+            className="flex-1 min-w-0 bg-bg2 border border-border rounded-[10px] text-text p-[11px_12px] text-sm outline-none focus:border-gold truncate"
           >
             <option value="">— Selecionar orçamento salvo —</option>
             {quotes.map((q) => (
@@ -340,7 +340,7 @@ export default function OrcamentoPage() {
           </select>
           <button
             onClick={clearForm}
-            className="px-4 py-2.5 text-sm rounded-xl border border-border text-text2 hover:text-gold hover:border-gold transition-colors shrink-0"
+            className="px-3 py-2.5 text-sm rounded-xl border border-border text-text2 hover:text-gold hover:border-gold transition-colors shrink-0 whitespace-nowrap"
           >
             Novo
           </button>
