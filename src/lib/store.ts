@@ -124,7 +124,13 @@ export function useSupabaseCollection<T extends { [key: string]: any }>(
     (updater: T[] | ((prev: T[]) => T[])) => {
       setItems((prev) => {
         const next = typeof updater === "function" ? (updater as (p: T[]) => T[])(prev) : updater;
-        saveData(next);
+        saveData(next).then((saved) => {
+          if (!saved) {
+            console.error("[useSupabaseCollection] save failed, reverting");
+            setItems(prev);
+            setError("Falha ao salvar no servidor. Tente novamente.");
+          }
+        });
         return next;
       });
     },
@@ -211,7 +217,13 @@ export function useSupabaseCompany<T extends { [key: string]: any }>(
     (updater: T | ((prev: T) => T)) => {
       setItem((prev) => {
         const next = typeof updater === "function" ? (updater as (p: T) => T)(prev) : updater;
-        saveData(next);
+        saveData(next).then((saved) => {
+          if (!saved) {
+            console.error("[useSupabaseCompany] save failed, reverting");
+            setItem(prev);
+            setError("Falha ao salvar no servidor. Tente novamente.");
+          }
+        });
         return next;
       });
     },
