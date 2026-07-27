@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import AppLayout from "@/components/AppLayout";
 import { CLIENTS, QUOTES, brl, quoteSubtotal, type Client, type Quote } from "@/lib/constants";
-import { useLocalCollection } from "@/lib/store";
+import { useSupabaseCollection } from "@/lib/store";
 
 const EMPTY_FORM: Client = {
   id: "",
@@ -30,8 +30,16 @@ const TYPE_STYLE: Record<string, string> = {
 };
 
 export default function ClientesPage() {
-  const [clients, setClients] = useLocalCollection<Client>("mendes-clients", CLIENTS);
-  const [quotes] = useLocalCollection<Quote>("mendes-quotes", QUOTES);
+  const [clients, setClients] = useSupabaseCollection<Client>({
+    endpoint: "/api/clients",
+    seed: CLIENTS,
+    localStorageKey: "mendes-clients",
+  });
+  const [quotes] = useSupabaseCollection<Quote>({
+    endpoint: "/api/quotes",
+    seed: QUOTES,
+    localStorageKey: "mendes-quotes",
+  });
   const [search, setSearch] = useState("");
   const [form, setForm] = useState<Client>(EMPTY_FORM);
   const [editing, setEditing] = useState<string | null>(null);

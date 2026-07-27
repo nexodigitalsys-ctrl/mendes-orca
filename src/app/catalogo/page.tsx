@@ -3,12 +3,16 @@
 import { useState, useRef, useMemo } from "react";
 import AppLayout from "@/components/AppLayout";
 import { CATALOG, brl, type Product } from "@/lib/constants";
-import { useLocalCollection } from "@/lib/store";
+import { useSupabaseCollection, uploadImage } from "@/lib/store";
 
 const EMPTY_FORM: Product = { code: "", name: "", meas: "", finish: "", price: 0, image: "" };
 
 export default function CatalogoPage() {
-  const [products, setProducts] = useLocalCollection<Product>("mendes-catalog", CATALOG);
+  const [products, setProducts] = useSupabaseCollection<Product>({
+    endpoint: "/api/products",
+    seed: CATALOG,
+    localStorageKey: "mendes-catalog",
+  });
   const [search, setSearch] = useState("");
   const [form, setForm] = useState<Product>(EMPTY_FORM);
   const [editing, setEditing] = useState<string | null>(null);
@@ -36,19 +40,19 @@ export default function CatalogoPage() {
     setShowForm(true);
   }
 
-  function handleImage(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleImage(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onerror = () => alert("Erro ao ler a imagem. Tente outra foto.");
-    reader.onload = () => {
+    reader.onload = async () => {
       const img = new Image();
       img.onerror = () => alert("Erro ao processar a imagem. Tente outra foto.");
-      img.onload = () => {
+      img.onload = async () => {
         try {
           const canvas = document.createElement("canvas");
-          const MAX = 400;
+          const MAX = 800;
           let w = img.width;
           let h = img.height;
           if (w > MAX || h > MAX) {
@@ -62,16 +66,15 @@ export default function CatalogoPage() {
           ctx.fillStyle = "#ffffff";
           ctx.fillRect(0, 0, w, h);
           ctx.drawImage(img, 0, 0, w, h);
-          const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
-          // Evita data URIs enormes que podem falhar no localStorage mobile
-          if (dataUrl.length > 500000) {
-            alert("A imagem ficou muito grande após o processamento. Tende uma foto menor.");
-            return;
-          }
-          setForm((f) => ({ ...f, image: dataUrl }));
+          const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+
+          const code = form.code || `temp-${Date.now()}`;
+          const path = `products/${code}-${Date.now()}.jpg`;
+          const url = await uploadImage(dataUrl, path);
+          setForm((f) => ({ ...f, image: url }));
         } catch (err) {
           console.error(err);
-          alert("Erro ao comprimir a imagem. Tente uma foto menor.");
+          alert("Erro ao enviar a imagem. Tente uma foto menor.");
         }
       };
       img.src = reader.result as string;

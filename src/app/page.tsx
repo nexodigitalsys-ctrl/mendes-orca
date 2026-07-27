@@ -3,7 +3,7 @@
 import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
 import { QUOTES, CLIENTS, CATALOG, brl, quoteSubtotal, quotePieces, type Quote, type Client, type Product } from "@/lib/constants";
-import { useLocalCollection } from "@/lib/store";
+import { useSupabaseCollection } from "@/lib/store";
 
 const WEEKDAYS = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
 const MONTHS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
@@ -25,9 +25,21 @@ const STATUS_LABEL: Record<string, string> = {
 };
 
 export default function Home() {
-  const [quotes] = useLocalCollection<Quote>("mendes-quotes", QUOTES);
-  const [clients] = useLocalCollection<Client>("mendes-clients", CLIENTS);
-  const [catalog] = useLocalCollection<Product>("mendes-catalog", CATALOG);
+  const [quotes] = useSupabaseCollection<Quote>({
+    endpoint: "/api/quotes",
+    seed: QUOTES,
+    localStorageKey: "mendes-quotes",
+  });
+  const [clients] = useSupabaseCollection<Client>({
+    endpoint: "/api/clients",
+    seed: CLIENTS,
+    localStorageKey: "mendes-clients",
+  });
+  const [catalog] = useSupabaseCollection<Product>({
+    endpoint: "/api/products",
+    seed: CATALOG,
+    localStorageKey: "mendes-catalog",
+  });
 
   const now = new Date();
   const currentMonth = now.getMonth();

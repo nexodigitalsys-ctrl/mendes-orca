@@ -4,7 +4,7 @@ import { useState, useMemo, useCallback } from "react";
 import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
 import { CATALOG, CLIENTS, brl, type Product, type Client, type Quote, type Environment, type QuoteItem } from "@/lib/constants";
-import { useLocalCollection } from "@/lib/store";
+import { useSupabaseCollection } from "@/lib/store";
 
 function nextQuoteNumber(quotes: Quote[]): string {
   const year = new Date().getFullYear();
@@ -54,9 +54,21 @@ function quoteTotals(q: {
 }
 
 export default function OrcamentoPage() {
-  const [quotes, setQuotes] = useLocalCollection<Quote>("mendes-quotes", []);
-  const [catalog] = useLocalCollection<Product>("mendes-catalog", CATALOG);
-  const [clients] = useLocalCollection<Client>("mendes-clients", CLIENTS);
+  const [quotes, setQuotes] = useSupabaseCollection<Quote>({
+    endpoint: "/api/quotes",
+    seed: [],
+    localStorageKey: "mendes-quotes",
+  });
+  const [catalog] = useSupabaseCollection<Product>({
+    endpoint: "/api/products",
+    seed: CATALOG,
+    localStorageKey: "mendes-catalog",
+  });
+  const [clients] = useSupabaseCollection<Client>({
+    endpoint: "/api/clients",
+    seed: CLIENTS,
+    localStorageKey: "mendes-clients",
+  });
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [number, setNumber] = useState("");

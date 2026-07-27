@@ -1,30 +1,29 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import AppLayout from "@/components/AppLayout";
 import { DEFAULT_COMPANY, type Company } from "@/lib/constants";
-import { useLocalCollection } from "@/lib/store";
+import { useSupabaseCompany, uploadImage } from "@/lib/store";
 
 export default function EmpresaPage() {
-  const [companies, setCompanies] = useLocalCollection<Company>("mendes-company", [DEFAULT_COMPANY]);
-  const company = companies[0] || DEFAULT_COMPANY;
+  const [company, setCompany] = useSupabaseCompany<Company>(DEFAULT_COMPANY);
   const [form, setForm] = useState<Company>({ ...company });
   const [toast, setToast] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
-  function handleLogo(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleLogo(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const reader = new FileReader();
     reader.onerror = () => alert("Erro ao ler a logo. Tente outra imagem.");
-    reader.onload = () => {
+    reader.onload = async () => {
       const img = new Image();
       img.onerror = () => alert("Erro ao processar a logo. Tente outra imagem.");
-      img.onload = () => {
+      img.onload = async () => {
         try {
           const canvas = document.createElement("canvas");
-          const MAX = 200;
+          const MAX = 400;
           let w = img.width;
           let h = img.height;
           if (w > MAX || h > MAX) {
@@ -38,15 +37,13 @@ export default function EmpresaPage() {
           ctx.fillStyle = "#ffffff";
           ctx.fillRect(0, 0, w, h);
           ctx.drawImage(img, 0, 0, w, h);
-          const compressed = canvas.toDataURL("image/png");
-          if (compressed.length > 200000) {
-            alert("A logo ficou muito grande. Tente uma imagem menor.");
-            return;
-          }
-          setForm((f) => ({ ...f, logo: compressed }));
+          const dataUrl = canvas.toDataURL("image/png");
+          const path = `logo/${Date.now()}.png`;
+          const url = await uploadImage(dataUrl, path);
+          setForm((f) => ({ ...f, logo: url }));
         } catch (err) {
           console.error(err);
-          alert("Erro ao comprimir a logo. Tente uma imagem menor.");
+          alert("Erro ao enviar a logo. Tente uma imagem menor.");
         }
       };
       img.src = reader.result as string;
@@ -59,10 +56,14 @@ export default function EmpresaPage() {
       alert("Nome da empresa é obrigatório.");
       return;
     }
-    setCompanies([{ ...form }]);
+    setCompany({ ...form });
     setToast("Dados da empresa salvos!");
     setTimeout(() => setToast(""), 2500);
   }
+
+  useEffect(() => {
+    setForm((f) => ({ ...company, ...f }));
+  }, [company]);
 
   return (
     <AppLayout>

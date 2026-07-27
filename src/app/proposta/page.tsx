@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
 import { CATALOG, CLIENTS, DEFAULT_COMPANY, brl, type Product, type Client, type Company, type Quote } from "@/lib/constants";
-import { useLocalCollection } from "@/lib/store";
+import { useSupabaseCollection, useSupabaseCompany } from "@/lib/store";
 
 const PAYMENT_LABELS: Record<string, string> = {
   cheque: "Cheque",
@@ -37,11 +37,22 @@ function quoteSubtotal(q: Quote, catalog: Product[]) {
 }
 
 export default function PropostaPage() {
-  const [quotes] = useLocalCollection<Quote>("mendes-quotes", []);
-  const [catalog] = useLocalCollection<Product>("mendes-catalog", CATALOG);
-  const [clients] = useLocalCollection<Client>("mendes-clients", CLIENTS);
-  const [companies] = useLocalCollection<Company>("mendes-company", [DEFAULT_COMPANY]);
-  const company = companies[0] || DEFAULT_COMPANY;
+  const [quotes] = useSupabaseCollection<Quote>({
+    endpoint: "/api/quotes",
+    seed: [],
+    localStorageKey: "mendes-quotes",
+  });
+  const [catalog] = useSupabaseCollection<Product>({
+    endpoint: "/api/products",
+    seed: CATALOG,
+    localStorageKey: "mendes-catalog",
+  });
+  const [clients] = useSupabaseCollection<Client>({
+    endpoint: "/api/clients",
+    seed: CLIENTS,
+    localStorageKey: "mendes-clients",
+  });
+  const [company] = useSupabaseCompany<Company>(DEFAULT_COMPANY);
   const [selectedId, setSelectedId] = useState("");
 
   useEffect(() => {
