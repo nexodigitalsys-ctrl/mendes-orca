@@ -15,16 +15,18 @@ Direção escolhida: **Híbrido (C2)** — manter a identidade preta/dourada atu
 ### 1. Cabeçalho
 
 - Fundo branco.
-- Logo em ambos os cantos superiores (esquerda e direita), como no PDF antigo.
-- Dados da empresa centralizados: nome, slogan, telefone, cidade, CNPJ.
-- Data e número do orçamento no canto superior direito, abaixo do logo.
+- **Logo à esquerda**, acompanhada do nome "MENDES DESIGN" e do slogan "móveis para áreas externas" em fonte menor.
+- **Nada no lado direito** do cabeçalho.
+- A logo real é carregada a partir das configurações da empresa (`company.logo`).
 
-### 2. Bloco do cliente
+### 2. Bloco de empresa + cliente
 
-- Manter fundo bege claro (`#F7F4EC`) e borda dourada suave.
-- Layout em duas colunas com labels, igual ao PDF antigo:
-  - Coluna 1: Cliente, CNPJ/CPF, Endereço, Cidade, Telefone, e-mail
-  - Coluna 2: Nome, Endereço, Cidade, Telefone, Arquiteto(a)
+- Dois cards lado a lado, ambos com fundo bege claro (`#F7F4EC`) e borda dourada suave.
+- **Card da empresa (esquerda):**
+  - Nome, endereço, cidade, telefone, CNPJ.
+  - Data e número do orçamento.
+- **Card do cliente (direita):**
+  - Nome, CNPJ/CPF, endereço, cidade, telefone, arquiteto(a).
 - Aumentar padding interno para evitar texto colado nas bordas.
 
 ### 3. Título “ORÇAMENTO”
