@@ -52,7 +52,7 @@ export default function Home() {
         <h1 className="font-serif text-2xl mb-1">Olá, João 👋</h1>
         <p className="text-text2 text-[13px] mb-5">{formatDate(now)}</p>
 
-        <div className="grid grid-cols-3 gap-2.5 mb-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 mb-5">
           <div className="bg-card border border-border rounded-xl p-3.5">
             <div className="text-xl font-bold text-gold">{quotesThisMonth.length || 7}</div>
             <div className="text-[11px] text-text2 mt-0.5">Orçamentos no mês</div>
@@ -61,7 +61,7 @@ export default function Home() {
             <div className="text-xl font-bold text-gold">{awaitingReturn.length || 3}</div>
             <div className="text-[11px] text-text2 mt-0.5">Aguardando retorno</div>
           </div>
-          <div className="bg-card border border-border rounded-xl p-3.5">
+          <div className="bg-card border border-border rounded-xl p-3.5 col-span-2 md:col-span-1">
             <div className="text-xl font-bold text-gold">{brl(approvedTotal || 512000)}</div>
             <div className="text-[11px] text-text2 mt-0.5">Aprovados em julho</div>
           </div>
