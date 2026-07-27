@@ -478,7 +478,12 @@ export default function OrcamentoPage() {
                     {/* Thumbnail */}
                     <div className="w-10 h-10 rounded-lg bg-bg2 border border-border flex items-center justify-center overflow-hidden shrink-0">
                       {product?.image ? (
-                        <img src={product.image} alt="" className="w-full h-full object-cover" />
+                        <img
+                          src={product.image}
+                          alt=""
+                          className="w-full h-full object-cover"
+                          onError={(e) => { e.currentTarget.style.display = "none"; }}
+                        />
                       ) : (
                         <span className="text-base">🪑</span>
                       )}

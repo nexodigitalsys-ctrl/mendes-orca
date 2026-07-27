@@ -15,26 +15,39 @@ export default function EmpresaPage() {
   function handleLogo(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+
     const reader = new FileReader();
+    reader.onerror = () => alert("Erro ao ler a logo. Tente outra imagem.");
     reader.onload = () => {
       const img = new Image();
+      img.onerror = () => alert("Erro ao processar a logo. Tente outra imagem.");
       img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const MAX = 300;
-        let w = img.width;
-        let h = img.height;
-        if (w > MAX || h > MAX) {
-          if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
-          else { w = Math.round(w * MAX / h); h = MAX; }
+        try {
+          const canvas = document.createElement("canvas");
+          const MAX = 200;
+          let w = img.width;
+          let h = img.height;
+          if (w > MAX || h > MAX) {
+            if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+            else { w = Math.round(w * MAX / h); h = MAX; }
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) throw new Error("Canvas não suportado");
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, w, h);
+          ctx.drawImage(img, 0, 0, w, h);
+          const compressed = canvas.toDataURL("image/png");
+          if (compressed.length > 200000) {
+            alert("A logo ficou muito grande. Tente uma imagem menor.");
+            return;
+          }
+          setForm((f) => ({ ...f, logo: compressed }));
+        } catch (err) {
+          console.error(err);
+          alert("Erro ao comprimir a logo. Tente uma imagem menor.");
         }
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext("2d")!;
-        ctx.fillStyle = "#ffffff";
-        ctx.fillRect(0, 0, w, h);
-        ctx.drawImage(img, 0, 0, w, h);
-        const compressed = canvas.toDataURL("image/png");
-        setForm((f) => ({ ...f, logo: compressed }));
       };
       img.src = reader.result as string;
     };

@@ -39,22 +39,40 @@ export default function CatalogoPage() {
   function handleImage(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+
     const reader = new FileReader();
+    reader.onerror = () => alert("Erro ao ler a imagem. Tente outra foto.");
     reader.onload = () => {
       const img = new Image();
+      img.onerror = () => alert("Erro ao processar a imagem. Tente outra foto.");
       img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const MAX = 600;
-        let w = img.width;
-        let h = img.height;
-        if (w > MAX || h > MAX) {
-          if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
-          else { w = Math.round(w * MAX / h); h = MAX; }
+        try {
+          const canvas = document.createElement("canvas");
+          const MAX = 400;
+          let w = img.width;
+          let h = img.height;
+          if (w > MAX || h > MAX) {
+            if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+            else { w = Math.round(w * MAX / h); h = MAX; }
+          }
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) throw new Error("Canvas não suportado");
+          ctx.fillStyle = "#ffffff";
+          ctx.fillRect(0, 0, w, h);
+          ctx.drawImage(img, 0, 0, w, h);
+          const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
+          // Evita data URIs enormes que podem falhar no localStorage mobile
+          if (dataUrl.length > 500000) {
+            alert("A imagem ficou muito grande após o processamento. Tende uma foto menor.");
+            return;
+          }
+          setForm((f) => ({ ...f, image: dataUrl }));
+        } catch (err) {
+          console.error(err);
+          alert("Erro ao comprimir a imagem. Tente uma foto menor.");
         }
-        canvas.width = w;
-        canvas.height = h;
-        canvas.getContext("2d")!.drawImage(img, 0, 0, w, h);
-        setForm((f) => ({ ...f, image: canvas.toDataURL("image/jpeg", 0.85) }));
       };
       img.src = reader.result as string;
     };
