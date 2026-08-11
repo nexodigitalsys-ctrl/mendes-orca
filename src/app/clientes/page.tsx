@@ -45,6 +45,8 @@ export default function ClientesPage() {
   const [editing, setEditing] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   const architects = useMemo(
     () => clients.filter((c) => c.type === "architect"),
@@ -77,7 +79,7 @@ export default function ClientesPage() {
     setShowForm(true);
   }
 
-  function save() {
+  async function save() {
     if (!form.name.trim()) {
       alert("Nome é obrigatório.");
       return;
@@ -87,25 +89,54 @@ export default function ClientesPage() {
       ...form,
       id: editing || `cli-${Date.now()}`,
     };
+    setSaving(true);
+    setSaveError(null);
 
-    if (editing) {
-      setClients((prev) => prev.map((c) => (c.id === editing ? saved : c)));
-    } else {
-      setClients((prev) => [...prev, saved]);
+    try {
+      const res = await fetch("/api/clients", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(saved),
+      });
+      const data = await res.json().catch(() => ({ error: "Resposta inválida do servidor" }));
+      if (!res.ok) {
+        throw new Error(data.error || `Erro ${res.status} ao salvar cliente`);
+      }
+
+      setClients((prev) => {
+        const idx = prev.findIndex((c) => c.id === saved.id);
+        if (idx >= 0) {
+          return prev.map((c) => (c.id === saved.id ? saved : c));
+        }
+        return [...prev, saved];
+      });
+      setShowForm(false);
+      setForm(EMPTY_FORM);
+      setEditing(null);
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : "Erro ao salvar cliente");
+    } finally {
+      setSaving(false);
     }
-    setShowForm(false);
-    setForm(EMPTY_FORM);
-    setEditing(null);
   }
 
-  function remove(c: Client) {
+  async function remove(c: Client) {
     const quotes = getClientQuotes(c.id);
     if (quotes.length > 0) {
       alert(`Exclua os ${quotes.length} orçamento(s) vinculado(s) a "${c.name}" primeiro.`);
       return;
     }
     if (!confirm(`Excluir cliente "${c.name}"?`)) return;
-    setClients((prev) => prev.filter((cl) => cl.id !== c.id));
+    try {
+      const res = await fetch(`/api/clients?id=${encodeURIComponent(c.id)}`, { method: "DELETE" });
+      const data = await res.json().catch(() => ({ error: "Resposta inválida do servidor" }));
+      if (!res.ok) {
+        throw new Error(data.error || `Erro ${res.status} ao excluir cliente`);
+      }
+      setClients((prev) => prev.filter((cl) => cl.id !== c.id));
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Erro ao excluir cliente");
+    }
   }
 
   function exportCSV() {
@@ -244,16 +275,24 @@ export default function ClientesPage() {
               </div>
             </div>
 
+            {saveError && (
+              <div className="mt-3 p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm">
+                {saveError}
+              </div>
+            )}
+
             <div className="flex gap-2 mt-4">
               <button
                 onClick={save}
-                className="flex-1 bg-gold text-bg font-bold border-none rounded-xl px-5 py-3 text-sm hover:bg-gold-d transition-colors"
+                disabled={saving}
+                className="flex-1 bg-gold text-bg font-bold border-none rounded-xl px-5 py-3 text-sm hover:bg-gold-d transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                {editing ? "Salvar" : "Cadastrar"}
+                {saving ? (editing ? "Salvando..." : "Cadastrando...") : (editing ? "Salvar" : "Cadastrar")}
               </button>
               <button
-                onClick={() => { setShowForm(false); setEditing(null); }}
-                className="px-5 py-3 text-sm rounded-xl border border-border text-text2 hover:text-text hover:border-gold transition-colors"
+                onClick={() => { setShowForm(false); setEditing(null); setSaveError(null); }}
+                disabled={saving}
+                className="px-5 py-3 text-sm rounded-xl border border-border text-text2 hover:text-text hover:border-gold transition-colors disabled:opacity-60"
               >
                 Cancelar
               </button>
