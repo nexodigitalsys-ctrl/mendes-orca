@@ -57,7 +57,7 @@ export default function PropostaPage() {
 
   useEffect(() => {
     if (quotes.length > 0 && !selectedId) {
-      setSelectedId(quotes[quotes.length - 1].id);
+      setSelectedId(quotes[0].id);
     }
   }, [quotes, selectedId]);
 
