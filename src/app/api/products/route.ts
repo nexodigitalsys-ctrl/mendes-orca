@@ -14,7 +14,8 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     console.log("[API products POST] body:", body);
-    const { data, error } = await supabase.from("products").upsert(body).select();
+    const payload = Array.isArray(body) ? body : [body];
+    const { data, error } = await supabase.from("products").upsert(payload).select();
     if (error) {
       console.error("[API products POST]", error);
       return NextResponse.json({ error: error.message, code: error.code, details: error.details }, { status: 500 });
