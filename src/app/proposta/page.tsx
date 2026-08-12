@@ -1,17 +1,11 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import AppLayout from "@/components/AppLayout";
-import { CATALOG, CLIENTS, DEFAULT_COMPANY, brl, type Product, type Client, type Company, type Quote } from "@/lib/constants";
+import { CATALOG, CLIENTS, DEFAULT_COMPANY, brl, paymentLabel, type Product, type Client, type Company, type Quote } from "@/lib/constants";
 import { useSupabaseCollection, useSupabaseCompany } from "@/lib/store";
-
-const PAYMENT_LABELS: Record<string, string> = {
-  cheque: "Cheque",
-  pix: "Depósito / PIX",
-  boleto: "Boleto",
-  cartao: "Cartão de crédito — parcelado em até 10x",
-};
 
 const MONTHS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 
@@ -36,7 +30,9 @@ function quoteSubtotal(q: Quote, catalog: Product[]) {
   return q.environments.reduce((s, e) => s + envSubtotal(e, catalog), 0);
 }
 
-export default function PropostaPage() {
+function PropostaInner() {
+  const searchParams = useSearchParams();
+  const preselectId = searchParams.get("id");
   const [quotes] = useSupabaseCollection<Quote>({
     endpoint: "/api/quotes",
     seed: [],
@@ -56,10 +52,14 @@ export default function PropostaPage() {
   const [selectedId, setSelectedId] = useState("");
 
   useEffect(() => {
+    if (preselectId && quotes.some((q) => q.id === preselectId)) {
+      setSelectedId(preselectId);
+      return;
+    }
     if (quotes.length > 0 && !selectedId) {
       setSelectedId(quotes[0].id);
     }
-  }, [quotes, selectedId]);
+  }, [quotes, selectedId, preselectId]);
 
   const quote = useMemo(
     () => quotes.find((q) => q.id === selectedId) || null,
@@ -74,8 +74,10 @@ export default function PropostaPage() {
   const pieces = quote ? quoteTotalPieces(quote) : 0;
 
   const paymentText = quote?.paymentMethods?.length
-    ? quote.paymentMethods.map((m) => PAYMENT_LABELS[m] || m).join(" · ")
+    ? quote.paymentMethods.map((m) => paymentLabel(m)).join(" · ")
     : "A combinar";
+
+  const docTitle = (quote?.docTitle || "ORÇAMENTO").toUpperCase();
 
   const whatsappUrl = quote
     ? `https://wa.me/?text=${encodeURIComponent(
@@ -191,7 +193,7 @@ export default function PropostaPage() {
                 </div>
               </div>
               <div className="quote-number">
-                <span>Orçamento</span>
+                <span>{docTitle}</span>
                 <b>{quote.number}</b>
               </div>
             </div>
@@ -219,7 +221,7 @@ export default function PropostaPage() {
             </div>
 
             {/* Title */}
-            <div className="orc-title">ORÇAMENTO</div>
+            <div className="orc-title">{docTitle}</div>
 
             {/* Environments */}
             {quote.environments.map((env, ei) => (
@@ -672,5 +674,13 @@ export default function PropostaPage() {
         }
       `}</style>
     </AppLayout>
+  );
+}
+
+export default function PropostaPage() {
+  return (
+    <Suspense>
+      <PropostaInner />
+    </Suspense>
   );
 }
