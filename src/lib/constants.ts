@@ -61,6 +61,7 @@ export interface Quote {
   number: string;
   clientId: string;
   status: QuoteStatus;
+  docTitle?: string;
   environments: Environment[];
   createdAt: string;
   clientName?: string;
@@ -283,4 +284,18 @@ export function quotePieces(quote: Quote): number {
   return quote.environments.reduce((envSum, env) => {
     return envSum + env.items.reduce((itemSum, item) => itemSum + item.qty, 0);
   }, 0);
+}
+
+export function paymentLabel(method: string): string {
+  const legacy: Record<string, string> = {
+    cheque: "Cheque",
+    pix: "Depósito / PIX",
+    boleto: "Boleto",
+    cartao: "Cartão de crédito — parcelado em até 10x",
+  };
+  if (method.startsWith("cartao:")) {
+    const n = parseInt(method.split(":")[1], 10);
+    return n > 1 ? `Cartão de crédito — ${n}x` : "Cartão de crédito — à vista";
+  }
+  return legacy[method] || method;
 }
