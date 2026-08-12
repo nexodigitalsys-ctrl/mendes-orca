@@ -56,6 +56,7 @@ create table if not exists public.quotes (
   client_architect text not null default '',
   status text not null default 'rascunho',
   doc_title text not null default 'ORÇAMENTO',
+  payment_notes text not null default '',
   environments jsonb not null default '[]'::jsonb,
   discount numeric not null default 0,
   delivery_time text not null default '90 DIAS',
@@ -72,3 +73,6 @@ create index if not exists idx_quotes_created_at on public.quotes(created_at);
 
 -- Migração 2026-08-12: título editável do documento (ORÇAMENTO/PEDIDO/...)
 alter table public.quotes add column if not exists doc_title text not null default 'ORÇAMENTO';
+
+-- Migração 2026-08-12: observação livre das condições de pagamento (ex.: "50% de entrada")
+alter table public.quotes add column if not exists payment_notes text not null default '';

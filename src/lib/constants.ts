@@ -62,6 +62,7 @@ export interface Quote {
   clientId: string;
   status: QuoteStatus;
   docTitle?: string;
+  paymentNotes?: string;
   environments: Environment[];
   createdAt: string;
   clientName?: string;

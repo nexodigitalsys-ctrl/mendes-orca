@@ -298,7 +298,7 @@ function PropostaInner() {
 
             {/* Footer */}
             <div className="foot">
-              <b>Condições de pagamento:</b> {paymentText} &nbsp;·&nbsp;
+              <b>Condições de pagamento:</b> {paymentText}{quote.paymentNotes ? <> &nbsp;·&nbsp; {quote.paymentNotes}</> : null} &nbsp;·&nbsp;
               <b>Prazo de entrega:</b> {quote.deliveryTime || "90 DIAS"} &nbsp;·&nbsp;
               <b>Validade:</b> {quote.validity || "15 dias"}
               <br />

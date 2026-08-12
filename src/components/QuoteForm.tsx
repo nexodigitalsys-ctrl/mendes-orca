@@ -90,6 +90,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
   const [deliveryTime, setDeliveryTime] = useState("90 DIAS");
   const [validity, setValidity] = useState("15 dias");
   const [paymentMethods, setPaymentMethods] = useState<string[]>(["pix"]);
+  const [paymentNotes, setPaymentNotes] = useState("");
   const [discount, setDiscount] = useState(0);
   const [discountInput, setDiscountInput] = useState("");
   const [discountType, setDiscountType] = useState<"abs" | "pct">("abs");
@@ -124,6 +125,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
     setDeliveryTime(q.deliveryTime || "90 DIAS");
     setValidity(q.validity || "15 dias");
     setPaymentMethods(q.paymentMethods || ["pix"]);
+    setPaymentNotes(q.paymentNotes || "");
     setDiscount(q.discount || 0);
     setDiscountInput("");
     setDiscountType("abs");
@@ -145,6 +147,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
     setDeliveryTime("90 DIAS");
     setValidity("15 dias");
     setPaymentMethods(["pix"]);
+    setPaymentNotes("");
     setDiscount(0);
     setDiscountInput("");
     setDiscountType("abs");
@@ -295,6 +298,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
       deliveryTime,
       validity,
       paymentMethods,
+      paymentNotes: paymentNotes.trim() || undefined,
       discount: discount || undefined,
     };
 
@@ -308,7 +312,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
   }, [
     editingId, number, clientId, status, docTitle, environments, clientName,
     clientDocument, clientPhone, clientAddress, clientCity, clientArchitect,
-    deliveryTime, validity, paymentMethods, discount, quotes, setQuotes,
+    deliveryTime, validity, paymentMethods, paymentNotes, discount, quotes, setQuotes,
     docLabel, defaultDocTitle, numberPrefix,
   ]);
 
@@ -660,7 +664,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
             💳 Cartão + parcelas
           </button>
         </div>
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-2 mb-2">
           {paymentMethods
             .filter((m) => m.startsWith("cartao"))
             .map((m) => (
@@ -680,6 +684,12 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
               </span>
             ))}
         </div>
+        <input
+          value={paymentNotes}
+          onChange={(e) => setPaymentNotes(e.target.value)}
+          className="w-full bg-bg2 border border-border rounded-[10px] text-text p-[11px_12px] text-sm outline-none focus:border-gold mb-4"
+          placeholder="Observação do pagamento — ex.: 50% de entrada e restante na entrega"
+        />
 
         {/* === E. TOTAIS === */}
         <div className="bg-gradient-to-br from-card to-bg2 border border-gold/40 rounded-2xl p-4 mt-2">
