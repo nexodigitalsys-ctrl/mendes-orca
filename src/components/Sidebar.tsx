@@ -8,6 +8,7 @@ import ThemeToggle from "./ThemeToggle";
 const items = [
   { href: "/", label: "Início", icon: "🏠" },
   { href: "/orcamento", label: "Orçamento", icon: "📝" },
+  { href: "/pedidos", label: "Pedidos", icon: "📦" },
   { href: "/catalogo", label: "Catálogo", icon: "🪑" },
   { href: "/clientes", label: "Clientes", icon: "👥" },
   { href: "/empresa", label: "Empresa", icon: "⚙️" },
