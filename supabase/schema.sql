@@ -76,3 +76,6 @@ alter table public.quotes add column if not exists doc_title text not null defau
 
 -- Migração 2026-08-12: observação livre das condições de pagamento (ex.: "50% de entrada")
 alter table public.quotes add column if not exists payment_notes text not null default '';
+
+-- Migração 2026-08-13: nota do rodapé editável (ex.: "IPI incluso · Frete CIF · Aguardamos retorno!")
+alter table public.quotes add column if not exists footer_note text not null default '';

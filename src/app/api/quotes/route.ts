@@ -20,6 +20,7 @@ function denormalizeQuote(q: any) {
     deliveryTime: q.delivery_time,
     validity: q.validity,
     paymentMethods: q.payment_methods,
+    footerNote: q.footer_note,
     createdAt: q.created_at,
   };
 }
@@ -52,6 +53,7 @@ function normalizeQuote(q: any) {
     delivery_time: q.deliveryTime ?? q.delivery_time ?? "90 DIAS",
     validity: q.validity ?? "15 dias",
     payment_methods: q.paymentMethods ?? q.payment_methods ?? [],
+    footer_note: q.footerNote ?? q.footer_note ?? "",
     created_at: q.createdAt ?? q.created_at ?? new Date().toISOString().slice(0, 10),
   };
 }
