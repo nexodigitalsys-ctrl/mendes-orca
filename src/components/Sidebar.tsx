@@ -4,15 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "./ThemeToggle";
+import { Home, FileText, Package, Armchair, Users, Settings, FileCheck } from "lucide-react";
 
 const items = [
-  { href: "/", label: "Início", icon: "🏠" },
-  { href: "/orcamento", label: "Orçamento", icon: "📝" },
-  { href: "/pedidos", label: "Pedidos", icon: "📦" },
-  { href: "/catalogo", label: "Catálogo", icon: "🪑" },
-  { href: "/clientes", label: "Clientes", icon: "👥" },
-  { href: "/empresa", label: "Empresa", icon: "⚙️" },
-  { href: "/proposta", label: "Proposta", icon: "📄" },
+  { href: "/", label: "Início", icon: Home },
+  { href: "/orcamento", label: "Orçamento", icon: FileText },
+  { href: "/pedidos", label: "Pedidos", icon: Package },
+  { href: "/catalogo", label: "Catálogo", icon: Armchair },
+  { href: "/clientes", label: "Clientes", icon: Users },
+  { href: "/empresa", label: "Empresa", icon: Settings },
+  { href: "/proposta", label: "Proposta", icon: FileCheck },
 ];
 
 export default function Sidebar() {
@@ -30,6 +31,7 @@ export default function Sidebar() {
 
       {items.map((item) => {
         const active = pathname === item.href;
+        const Icon = item.icon;
         return (
           <Link
             key={item.href}
@@ -40,7 +42,7 @@ export default function Sidebar() {
                 : "text-text2 hover:bg-card hover:text-text"
             }`}
           >
-            <span className="text-lg">{item.icon}</span>
+            <Icon size={18} />
             {item.label}
           </Link>
         );

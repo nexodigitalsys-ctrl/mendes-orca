@@ -2,15 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Home, FileText, Package, Armchair, Users, Settings, FileCheck } from "lucide-react";
 
 const items = [
-  { href: "/", label: "Início", icon: "🏠" },
-  { href: "/orcamento", label: "Orçamento", icon: "📝" },
-  { href: "/pedidos", label: "Pedidos", icon: "📦" },
-  { href: "/catalogo", label: "Catálogo", icon: "🪑" },
-  { href: "/clientes", label: "Clientes", icon: "👥" },
-  { href: "/empresa", label: "Empresa", icon: "⚙️" },
-  { href: "/proposta", label: "Proposta", icon: "📄" },
+  { href: "/", label: "Início", icon: Home },
+  { href: "/orcamento", label: "Orçamento", icon: FileText },
+  { href: "/pedidos", label: "Pedidos", icon: Package },
+  { href: "/catalogo", label: "Catálogo", icon: Armchair },
+  { href: "/clientes", label: "Clientes", icon: Users },
+  { href: "/empresa", label: "Empresa", icon: Settings },
+  { href: "/proposta", label: "Proposta", icon: FileCheck },
 ];
 
 export default function BottomNav() {
@@ -20,6 +21,7 @@ export default function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-bg2 border-t border-border flex md:hidden">
       {items.map((item) => {
         const active = pathname === item.href;
+        const Icon = item.icon;
         return (
           <Link
             key={item.href}
@@ -28,9 +30,7 @@ export default function BottomNav() {
               active ? "text-gold" : "text-text2 hover:text-text"
             }`}
           >
-            <span className={`text-lg ${active ? "translate-y-[-1px]" : ""}`}>
-              {item.icon}
-            </span>
+            <Icon size={20} className={active ? "-translate-y-[1px]" : ""} />
             {item.label}
           </Link>
         );

@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import AppLayout from "@/components/AppLayout";
 import { CLIENTS, QUOTES, brl, quoteSubtotal, type Client, type Quote } from "@/lib/constants";
 import { useSupabaseCollection } from "@/lib/store";
+import { Search, Phone, Mail, Ruler, FileText, Pencil, Trash2 } from "lucide-react";
 
 const EMPTY_FORM: Client = {
   id: "",
@@ -171,7 +172,7 @@ export default function ClientesPage() {
 
         <input
           type="text"
-          placeholder="🔍 Buscar por nome, cidade ou arquiteto..."
+          placeholder="Buscar por nome, cidade ou arquiteto..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full bg-bg2 border border-border rounded-[10px] text-text p-[11px_12px] text-sm outline-none focus:border-gold mb-4"
@@ -334,9 +335,9 @@ export default function ClientesPage() {
                     )}
 
                     <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[12px] text-text2 mb-1.5">
-                      {c.phone && <span>📞 {c.phone}</span>}
-                      {c.email && <span>✉️ {c.email}</span>}
-                      {c.architect && <span>📐 Arq. {c.architect}</span>}
+                      {c.phone && <span><Phone size={12} className="inline mr-1 -mt-0.5" />{c.phone}</span>}
+                      {c.email && <span><Mail size={12} className="inline mr-1 -mt-0.5" />{c.email}</span>}
+                      {c.architect && <span><Ruler size={12} className="inline mr-1 -mt-0.5" />Arq. {c.architect}</span>}
                     </div>
 
                     <div className="flex items-center gap-3 text-[12px] text-text2 mb-2">
@@ -351,19 +352,19 @@ export default function ClientesPage() {
                         onClick={() => setExpanded(isExpanded ? null : c.id)}
                         className="bg-bg2 border border-border text-text2 rounded-lg px-2.5 py-1.5 text-[11px] hover:text-gold hover:border-gold transition-colors"
                       >
-                        📄 Orçamentos
+                        <FileText size={12} className="inline mr-1 -mt-0.5" /> Orçamentos
                       </button>
                       <button
                         onClick={() => openEdit(c)}
                         className="bg-bg2 border border-border text-text2 rounded-lg px-2.5 py-1.5 text-[11px] hover:text-gold hover:border-gold transition-colors"
                       >
-                        ✏️ Editar
+                        <Pencil size={12} className="inline mr-1 -mt-0.5" /> Editar
                       </button>
                       <button
                         onClick={() => remove(c)}
                         className="bg-bg2 border border-border text-text2 rounded-lg px-2.5 py-1.5 text-[11px] hover:text-red-500 hover:border-red-500 transition-colors"
                       >
-                        🗑
+                        <Trash2 size={12} />
                       </button>
                     </div>
                   </div>

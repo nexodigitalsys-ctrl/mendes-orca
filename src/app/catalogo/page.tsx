@@ -4,6 +4,7 @@ import { useState, useRef, useMemo } from "react";
 import AppLayout from "@/components/AppLayout";
 import { CATALOG, brl, type Product } from "@/lib/constants";
 import { useSupabaseCollection, uploadImage } from "@/lib/store";
+import { Search, Pencil, Trash2 } from "lucide-react";
 
 const EMPTY_FORM: Product = { code: "", name: "", meas: "", finish: "", price: 0, image: "" };
 
@@ -249,7 +250,7 @@ export default function CatalogoPage() {
 
         <input
           type="text"
-          placeholder="🔍 Buscar por nome ou código..."
+          placeholder="Buscar por nome ou código..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-full bg-bg2 border border-border rounded-[10px] text-text p-[11px_12px] text-sm outline-none focus:border-gold mb-4"
@@ -391,13 +392,13 @@ export default function CatalogoPage() {
                       onClick={() => openEdit(p)}
                       className="bg-bg2 border border-border text-text2 rounded-lg px-2.5 py-1.5 text-[11px] hover:text-gold hover:border-gold transition-colors"
                     >
-                      ✏️ Editar
+                      <Pencil size={12} className="inline mr-1 -mt-0.5" /> Editar
                     </button>
                     <button
                       onClick={() => remove(p.code)}
                       className="bg-bg2 border border-border text-text2 rounded-lg px-2.5 py-1.5 text-[11px] hover:text-red-500 hover:border-red-500 transition-colors"
                     >
-                      🗑
+                      <Trash2 size={12} />
                     </button>
                   </div>
                 </div>

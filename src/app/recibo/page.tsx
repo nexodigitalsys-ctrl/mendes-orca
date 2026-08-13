@@ -7,6 +7,7 @@ import AppLayout from "@/components/AppLayout";
 import { CATALOG, CLIENTS, DEFAULT_COMPANY, brl, type Client, type Company, type Product, type Quote } from "@/lib/constants";
 import { useSupabaseCollection, useSupabaseCompany } from "@/lib/store";
 import { valorPorExtenso } from "@/lib/extenso";
+import { Download, MessageCircle, ArrowLeft } from "lucide-react";
 
 const MONTHS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 
@@ -205,7 +206,7 @@ function ReciboContent() {
               }}
               className="flex-1 bg-gold text-bg font-bold border-none rounded-xl px-5 py-3 text-sm hover:bg-gold-d transition-colors"
             >
-              ⬇️ Baixar PDF
+              <Download size={16} className="inline mr-1.5 -mt-0.5" /> Baixar PDF
             </button>
             <a
               href={whatsappUrl}
@@ -213,7 +214,7 @@ function ReciboContent() {
               rel="noopener noreferrer"
               className="flex-1 flex items-center justify-center gap-2 px-5 py-3 text-sm rounded-xl border border-gold text-gold hover:bg-gold/10 transition-colors text-center"
             >
-              💬 WhatsApp
+              <MessageCircle size={16} /> WhatsApp
             </a>
           </div>
 

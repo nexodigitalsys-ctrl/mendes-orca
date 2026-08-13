@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import AppLayout from "@/components/AppLayout";
 import { DEFAULT_COMPANY, type Company } from "@/lib/constants";
 import { useSupabaseCompany, uploadImage } from "@/lib/store";
+import { Save } from "lucide-react";
 
 export default function EmpresaPage() {
   const [company, setCompany] = useSupabaseCompany<Company>(DEFAULT_COMPANY);
@@ -184,7 +185,7 @@ export default function EmpresaPage() {
             onClick={save}
             className="w-full bg-gold text-bg font-bold border-none rounded-xl px-5 py-3 text-sm mt-4 hover:bg-gold-d transition-colors"
           >
-            💾 Salvar dados da empresa
+            <Save size={16} className="inline mr-1.5 -mt-0.5" /> Salvar dados da empresa
           </button>
         </div>
       </div>
