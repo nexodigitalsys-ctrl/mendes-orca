@@ -617,8 +617,8 @@ function PropostaInner() {
           body { background: white !important; }
         }
 
-        /* ===== MOBILE CARDS ===== */
-        @media (max-width: 720px) {
+        /* ===== MOBILE CARDS (screen only) ===== */
+        @media screen and (max-width: 720px) {
           .paper-wrap { overflow: visible; }
           .paper-wrap .paper { min-width: 0; padding: 14px 12px; }
 

@@ -544,8 +544,8 @@ function PropostaViewInner() {
           .paper tbody tr:nth-child(odd) td { background: #ffffff !important; }
         }
 
-        /* ===== MOBILE ===== */
-        @media (max-width: 720px) {
+        /* ===== MOBILE (screen only — print always uses desktop layout) ===== */
+        @media screen and (max-width: 720px) {
           .page-container { padding: 8px; }
           .paper { padding: 14px 12px; }
 
