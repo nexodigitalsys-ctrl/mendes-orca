@@ -75,6 +75,7 @@ export interface Quote {
   validity?: string;
   paymentMethods?: string[];
   discount?: number;
+  footerNote?: string;
 }
 
 export const CATALOG: Product[] = [

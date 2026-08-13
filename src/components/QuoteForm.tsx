@@ -91,6 +91,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
   const [validity, setValidity] = useState("15 dias");
   const [paymentMethods, setPaymentMethods] = useState<string[]>(["pix"]);
   const [paymentNotes, setPaymentNotes] = useState("");
+  const [footerNote, setFooterNote] = useState("IPI incluso · Frete CIF · Aguardamos retorno!");
   const [discount, setDiscount] = useState(0);
   const [discountInput, setDiscountInput] = useState("");
   const [discountType, setDiscountType] = useState<"abs" | "pct">("abs");
@@ -126,6 +127,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
     setValidity(q.validity || "15 dias");
     setPaymentMethods(q.paymentMethods || ["pix"]);
     setPaymentNotes(q.paymentNotes || "");
+    setFooterNote(q.footerNote || "IPI incluso · Frete CIF · Aguardamos retorno!");
     setDiscount(q.discount || 0);
     setDiscountInput("");
     setDiscountType("abs");
@@ -148,6 +150,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
     setValidity("15 dias");
     setPaymentMethods(["pix"]);
     setPaymentNotes("");
+    setFooterNote("IPI incluso · Frete CIF · Aguardamos retorno!");
     setDiscount(0);
     setDiscountInput("");
     setDiscountType("abs");
@@ -299,6 +302,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
       validity,
       paymentMethods,
       paymentNotes: paymentNotes.trim() || undefined,
+      footerNote: footerNote.trim() || undefined,
       discount: discount || undefined,
     };
 
@@ -312,7 +316,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
   }, [
     editingId, number, clientId, status, docTitle, environments, clientName,
     clientDocument, clientPhone, clientAddress, clientCity, clientArchitect,
-    deliveryTime, validity, paymentMethods, paymentNotes, discount, quotes, setQuotes,
+    deliveryTime, validity, paymentMethods, paymentNotes, footerNote, discount, quotes, setQuotes,
     docLabel, defaultDocTitle, numberPrefix,
   ]);
 
@@ -691,6 +695,14 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
           onChange={(e) => setPaymentNotes(e.target.value)}
           className="w-full bg-bg2 border border-border rounded-[10px] text-text p-[11px_12px] text-sm outline-none focus:border-gold mb-4"
           placeholder="Observação do pagamento — ex.: 50% de entrada e restante na entrega"
+        />
+
+        <label className="block text-[11px] text-text2 mb-1.5 uppercase tracking-[0.4px]">Nota do rodapé</label>
+        <input
+          value={footerNote}
+          onChange={(e) => setFooterNote(e.target.value)}
+          className="w-full bg-bg2 border border-border rounded-[10px] text-text p-[11px_12px] text-sm outline-none focus:border-gold mb-4"
+          placeholder="IPI incluso · Frete CIF · Aguardamos retorno!"
         />
 
         {/* === E. TOTAIS === */}

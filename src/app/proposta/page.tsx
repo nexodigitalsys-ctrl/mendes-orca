@@ -302,7 +302,7 @@ function PropostaInner() {
               <b>Prazo de entrega:</b> {quote.deliveryTime || "90 DIAS"}
               {docTitle !== "PEDIDO" && <>&nbsp;·&nbsp;<b>Validade:</b> {quote.validity || "15 dias"}</>}
               <br />
-              IPI incluso · Frete CIF · Aguardamos retorno!
+              {quote.footerNote || "IPI incluso · Frete CIF · Aguardamos retorno!"}
             </div>
 
             {/* Signature */}
