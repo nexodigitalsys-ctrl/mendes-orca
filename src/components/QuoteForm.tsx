@@ -3,6 +3,7 @@
 import { useState, useMemo, useCallback } from "react";
 import Link from "next/link";
 import AppLayout from "@/components/AppLayout";
+import { Layers, Copy, Trash2, Armchair, CreditCard, Save, Eye } from "lucide-react";
 import { CATALOG, CLIENTS, brl, paymentLabel, type Product, type Client, type Quote, type Environment, type QuoteItem } from "@/lib/constants";
 import { useSupabaseCollection } from "@/lib/store";
 
@@ -497,7 +498,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
             <div key={ei} className="bg-card border border-border rounded-2xl overflow-hidden mb-4">
               {/* Env header */}
               <div className="flex items-center gap-2 px-3.5 py-3 bg-bg2 border-b border-border">
-                <span className="text-gold">▦</span>
+                <Layers size={16} className="text-gold" />
                 <input
                   value={env.name}
                   onChange={(e) => renameEnv(ei, e.target.value)}
@@ -508,14 +509,14 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
                   className="text-text2 hover:text-gold p-1 rounded hover:bg-border transition-colors text-sm"
                   title="Duplicar ambiente"
                 >
-                  ⧉
+                  <Copy size={14} />
                 </button>
                 <button
                   onClick={() => removeEnv(ei)}
                   className="text-text2 hover:text-red-500 p-1 rounded hover:bg-border transition-colors text-sm"
                   title="Excluir ambiente"
                 >
-                  🗑
+                  <Trash2 size={14} />
                 </button>
               </div>
 
@@ -541,7 +542,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
                           onError={(e) => { e.currentTarget.style.display = "none"; }}
                         />
                       ) : (
-                        <span className="text-base">🪑</span>
+                        <Armchair size={18} className="text-text2" />
                       )}
                     </div>
 
@@ -667,7 +668,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
             onClick={() => setCardModalOpen(true)}
             className="flex items-center gap-1.5 bg-bg2 border border-gold rounded-full px-3 py-1.5 text-[12px] cursor-pointer text-gold hover:bg-gold/10 transition-colors"
           >
-            💳 Cartão + parcelas
+            <CreditCard size={14} /> Cartão + parcelas
           </button>
         </div>
         <div className="flex flex-wrap gap-2 mb-2">
@@ -747,7 +748,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
           onClick={save}
           className="w-full bg-gold text-bg font-bold border-none rounded-2xl px-5 py-3.5 text-[14px] cursor-pointer hover:bg-gold-d transition-colors"
         >
-          💾 Salvar {isPedido ? "pedido" : "orçamento"}
+          <Save size={16} className="inline mr-1.5 -mt-0.5" /> Salvar {isPedido ? "pedido" : "orçamento"}
         </button>
 
         <div className="h-2.5" />
@@ -770,14 +771,14 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
             href={isEditing ? `/proposta?id=${editingId}` : "/proposta"}
             className="flex-1 flex items-center justify-center gap-2 bg-gold text-bg font-bold border-none rounded-xl px-5 py-3 text-sm hover:bg-gold-d transition-colors"
           >
-            👁️ Visualizar proposta
+            <Eye size={16} /> Visualizar proposta
           </Link>
           {isEditing && (
             <button
               onClick={removeQuote}
               className="px-5 py-3 text-sm rounded-xl border border-red-500 text-red-500 hover:bg-red-500/10 transition-colors"
             >
-              🗑 Excluir
+              <Trash2 size={16} className="inline mr-1 -mt-0.5" /> Excluir
             </button>
           )}
         </div>
