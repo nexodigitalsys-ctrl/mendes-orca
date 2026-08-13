@@ -81,6 +81,7 @@ function PropostaViewInner() {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       {/* ===== PAPER ===== */}
+      <div className="page-container">
       <div className="paper-wrap">
         <div className="paper">
           {/* Header */}
@@ -226,6 +227,7 @@ function PropostaViewInner() {
           </div>
         </div>
       </div>
+      </div>
 
       {/* All styles */}
       <style>{`
@@ -233,9 +235,14 @@ function PropostaViewInner() {
 
         body {
           margin: 0;
-          padding: 20px;
+          padding: 0;
           background: #0A0A0A;
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .page-container {
+          padding: 20px;
+          max-width: 1200px;
+          margin: 0 auto;
         }
 
         /* ===== PAPER BASE ===== */
