@@ -81,7 +81,6 @@ function PropostaViewInner() {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </head>
       {/* ===== PAPER ===== */}
-      <div className="page-container">
       <div className="paper-wrap">
         <div className="paper">
           {/* Header */}
@@ -227,22 +226,16 @@ function PropostaViewInner() {
           </div>
         </div>
       </div>
-      </div>
 
       {/* All styles */}
       <style>{`
         @page { size: A4; margin: 6mm 8mm; }
 
-        body {
+        html, body {
           margin: 0;
           padding: 0;
           background: #0A0A0A;
           font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        .page-container {
-          padding: 20px;
-          max-width: 1200px;
-          margin: 0 auto;
         }
 
         /* ===== PAPER BASE ===== */
@@ -349,7 +342,7 @@ function PropostaViewInner() {
         .paper .td-img img { width: 110px; height: 82px; object-fit: contain; border-radius: 4px; border: 1px solid #E8E4DA; }
         .paper .placeholder-box { width: 110px; height: 82px; display: flex; align-items: center; justify-content: center; background: #F7F4EC; border: 1px solid #E8E4DA; border-radius: 4px; margin: 0 auto; }
         .paper .placeholder-box svg { width: 32px; height: 32px; }
-        .paper-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; }
+        .paper-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; padding: 20px; }
         .paper-wrap .paper { min-width: 680px; }
 
         /* ===== PRINT — A4 portrait ===== */
