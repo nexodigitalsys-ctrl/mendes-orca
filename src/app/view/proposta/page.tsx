@@ -367,8 +367,8 @@ function PropostaViewInner() {
           }
 
           .page-container {
-            padding: 0;
-            max-width: none;
+            padding: 0 !important;
+            max-width: none !important;
           }
 
           .paper {
@@ -390,12 +390,13 @@ function PropostaViewInner() {
             gap: 10px !important;
             justify-content: space-between !important;
             align-items: center !important;
+            flex-wrap: nowrap !important;
           }
           .paper .plogo-img { max-height: 48px !important; max-width: 48px !important; }
           .paper .plogo-fallback { width: 48px !important; height: 48px !important; font-size: 16px !important; }
           .paper .plogo h2 { font-size: 16pt !important; letter-spacing: 1.5px !important; }
           .paper .company-slogan { font-size: 8pt !important; }
-          .paper .quote-number { text-align: right !important; gap: 1px !important; }
+          .paper .quote-number { text-align: right !important; gap: 1px !important; width: auto !important; flex-direction: column !important; }
           .paper .quote-number span { font-size: 7.5pt !important; letter-spacing: 1px !important; }
           .paper .quote-number b { font-size: 14pt !important; letter-spacing: 0.5px !important; }
           .paper .curr { font-size: 6.5pt !important; margin-right: 2px !important; }
@@ -411,6 +412,7 @@ function PropostaViewInner() {
 
           /* INFO CARDS */
           .paper .info-cards {
+            display: grid !important;
             grid-template-columns: 1fr 1fr !important;
             gap: 10px !important;
             margin-bottom: 14px !important;
@@ -425,14 +427,26 @@ function PropostaViewInner() {
           }
           .paper .info-card-title { font-size: 7.5pt !important; margin-bottom: 5px !important; }
 
-          /* TABLE */
+          /* TABLE - FORCE DESKTOP LAYOUT */
           .paper table {
+            display: table !important;
             table-layout: fixed !important;
             width: 100% !important;
             border-collapse: collapse !important;
             font-size: 8pt !important;
           }
+          .paper thead {
+            display: table-header-group !important;
+          }
+          .paper tbody {
+            display: table-row-group !important;
+          }
+          .paper table tr {
+            display: table-row !important;
+            page-break-inside: avoid !important;
+          }
           .paper th {
+            display: table-cell !important;
             background: #1a1a1a !important;
             color: #C9A227 !important;
             font-weight: 600 !important;
@@ -443,8 +457,10 @@ function PropostaViewInner() {
             text-align: left !important;
             white-space: nowrap !important;
             border: none !important;
+            vertical-align: middle !important;
           }
           .paper td {
+            display: table-cell !important;
             vertical-align: top !important;
             padding: 4px 3px !important;
             font-size: 8pt !important;
@@ -454,7 +470,12 @@ function PropostaViewInner() {
             border: none !important;
             border-bottom: 1px solid #e5ddc8 !important;
           }
-          .paper tbody tr { page-break-inside: avoid !important; }
+
+          /* HIDE MOBILE LABELS */
+          .paper table tbody td::before {
+            display: none !important;
+            content: none !important;
+          }
 
           /* COLUMN WIDTHS */
           .paper th:nth-child(1), .paper td:nth-child(1) { width: 4% !important; text-align: center !important; }
@@ -469,7 +490,7 @@ function PropostaViewInner() {
           /* IMAGES */
           .paper .th-img, .paper .td-img { width: 15% !important; text-align: center !important; }
           .paper .td-img img { max-width: 90px !important; max-height: 68px !important; width: auto !important; height: auto !important; object-fit: contain !important; border: 1px solid #e5ddc8 !important; border-radius: 4px !important; }
-          .paper .placeholder-box { width: 90px !important; height: 68px !important; }
+          .paper .placeholder-box { width: 90px !important; height: 68px !important; display: flex !important; }
           .paper .placeholder-box svg { width: 26px !important; height: 26px !important; }
 
           /* VALUES */
@@ -480,6 +501,7 @@ function PropostaViewInner() {
 
           /* SUBTOTAL */
           .paper .subt td {
+            display: table-cell !important;
             background: #F7F4EC !important;
             font-weight: 700 !important;
             color: #0A0A0A !important;
@@ -492,12 +514,15 @@ function PropostaViewInner() {
 
           /* GRAND TOTAL */
           .paper .grand {
+            display: flex !important;
+            flex-direction: row !important;
             background: #1a1a1a !important;
             color: #C9A227 !important;
             padding: 8px 12px !important;
             border-radius: 5px !important;
             margin-top: 10px !important;
             font-size: 10pt !important;
+            justify-content: space-between !important;
           }
           .paper .grand span { color: #C9A227 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 
