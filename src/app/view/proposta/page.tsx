@@ -663,68 +663,19 @@ function PropostaViewInner() {
         body.force-print-layout .paper .grand { flex-direction: row !important; }
         body.force-print-layout .print-hide { display: none !important; }
 
-        /* ===== MOBILE (screen only — print always uses desktop layout) ===== */
+        /* ===== MOBILE — mantém layout desktop, scroll horizontal ===== */
         @media screen and (max-width: 720px) {
-          .page-container { padding: 8px; }
-          .paper { padding: 14px 12px; }
-
-          .paper .ph {
-            flex-wrap: wrap;
-            gap: 10px;
-            padding-bottom: 10px;
-            margin-bottom: 12px;
+          .page-container {
+            padding: 8px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
           }
-          .paper .quote-number {
-            width: 100%;
-            text-align: left;
-            flex-direction: row;
-            align-items: baseline;
-            gap: 8px;
+          .paper {
+            min-width: 700px;
+            padding: 14px 12px;
           }
-          .paper .quote-number span { font-size: 8pt; }
-          .paper .quote-number b { font-size: 12pt; }
-
-          .paper .info-cards { grid-template-columns: 1fr; gap: 10px; }
-          .paper .info-card { font-size: 10.5px; padding: 10px; }
-
-          .paper table { table-layout: auto; }
-          .paper table thead { display: none; }
-          .paper table tbody tr {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2px;
-            padding: 10px;
-            border-bottom: 1px solid #E8E4DA;
-          }
-          .paper table tbody tr.subt {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 10px;
-          }
-          .paper table tbody td {
-            border: none;
-            padding: 2px 0;
-            font-size: 11px;
-          }
-          .paper table tbody td::before {
-            content: attr(data-label);
-            display: inline-block;
-            font-weight: 700;
-            color: #8a6d1a;
-            font-size: 9px;
-            letter-spacing: .5px;
-            text-transform: uppercase;
-            margin-right: 6px;
-          }
-          .paper .td-img { text-align: center; }
-          .paper .td-img img { width: 100%; max-width: 200px; height: auto; }
-          .paper .placeholder-box { width: 100%; max-width: 160px; height: 120px; }
-          .paper .placeholder-box svg { width: 40px; height: 40px; }
-          .paper .curr { margin-right: 3px; color: #8a6d1a; }
-          .paper .grand {
-            flex-direction: column;
-            gap: 4px;
-            text-align: center;
+          .print-hide button {
+            min-width: 0;
           }
         }
       `}</style>
