@@ -83,6 +83,33 @@ function PropostaViewInner() {
       </head>
 
       <div className="page-container">
+        {/* Botão Baixar PDF — hidden on print */}
+        <div className="print-hide" style={{ textAlign: "center", marginBottom: "16px" }}>
+          <button
+            onClick={() => {
+              document.body.classList.add("force-print-layout");
+              setTimeout(() => {
+                window.print();
+                setTimeout(() => document.body.classList.remove("force-print-layout"), 500);
+              }, 100);
+            }}
+            style={{
+              background: "#C9A227",
+              color: "#0A0A0A",
+              border: "none",
+              borderRadius: "12px",
+              padding: "14px 32px",
+              fontSize: "15px",
+              fontWeight: 700,
+              cursor: "pointer",
+              width: "100%",
+              maxWidth: "320px",
+            }}
+          >
+            📄 Baixar PDF
+          </button>
+        </div>
+
         <div className="paper">
           {/* Header */}
           <div className="ph">
@@ -598,6 +625,43 @@ function PropostaViewInner() {
             flex-direction: row !important;
           }
         }
+
+        /* Hide button on print */
+        @media print {
+          .print-hide { display: none !important; }
+        }
+
+        /* ===== FORCE PRINT LAYOUT (applied via JS before window.print) ===== */
+        body.force-print-layout,
+        body.force-print-layout .page-container,
+        body.force-print-layout .paper {
+          width: 210mm !important;
+          min-width: 210mm !important;
+          max-width: 210mm !important;
+          margin: 0 auto !important;
+          padding: 0 !important;
+        }
+        body.force-print-layout .paper {
+          box-shadow: none !important;
+          border-radius: 0 !important;
+          font-size: 9pt !important;
+        }
+        body.force-print-layout .paper .ph { flex-wrap: nowrap !important; }
+        body.force-print-layout .paper .quote-number {
+          width: auto !important;
+          text-align: right !important;
+          flex-direction: column !important;
+        }
+        body.force-print-layout .paper .info-cards { grid-template-columns: 1fr 1fr !important; }
+        body.force-print-layout .paper table { display: table !important; table-layout: fixed !important; width: 100% !important; }
+        body.force-print-layout .paper table thead { display: table-header-group !important; }
+        body.force-print-layout .paper table tbody { display: table-row-group !important; }
+        body.force-print-layout .paper table tr { display: table-row !important; }
+        body.force-print-layout .paper table th,
+        body.force-print-layout .paper table td { display: table-cell !important; }
+        body.force-print-layout .paper table tbody td::before { display: none !important; content: none !important; }
+        body.force-print-layout .paper .grand { flex-direction: row !important; }
+        body.force-print-layout .print-hide { display: none !important; }
 
         /* ===== MOBILE (screen only — print always uses desktop layout) ===== */
         @media screen and (max-width: 720px) {
