@@ -1,12 +1,9 @@
 "use client";
 
 import { useState, useMemo, useEffect, Suspense } from "react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import AppLayout from "@/components/AppLayout";
 import { CATALOG, CLIENTS, DEFAULT_COMPANY, brl, paymentLabel, type Product, type Client, type Company, type Quote } from "@/lib/constants";
 import { useSupabaseCollection, useSupabaseCompany } from "@/lib/store";
-import { Download, MessageCircle, ArrowLeft, Mail } from "lucide-react";
 
 const MONTHS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 
@@ -31,9 +28,10 @@ function quoteSubtotal(q: Quote, catalog: Product[]) {
   return q.environments.reduce((s, e) => s + envSubtotal(e, catalog), 0);
 }
 
-function PropostaInner() {
+function PropostaViewInner() {
   const searchParams = useSearchParams();
-  const preselectId = searchParams.get("id");
+  const quoteId = searchParams.get("id");
+
   const [quotes] = useSupabaseCollection<Quote>({
     endpoint: "/api/quotes",
     seed: [],
@@ -50,21 +48,10 @@ function PropostaInner() {
     localStorageKey: "mendes-clients",
   });
   const [company] = useSupabaseCompany<Company>(DEFAULT_COMPANY);
-  const [selectedId, setSelectedId] = useState("");
-
-  useEffect(() => {
-    if (preselectId && quotes.some((q) => q.id === preselectId)) {
-      setSelectedId(preselectId);
-      return;
-    }
-    if (quotes.length > 0 && !selectedId) {
-      setSelectedId(quotes[0].id);
-    }
-  }, [quotes, selectedId, preselectId]);
 
   const quote = useMemo(
-    () => quotes.find((q) => q.id === selectedId) || null,
-    [quotes, selectedId]
+    () => quotes.find((q) => q.id === quoteId) || null,
+    [quotes, quoteId]
   );
 
   const client = quote ? clients.find((c) => c.id === quote.clientId) : null;
@@ -80,250 +67,159 @@ function PropostaInner() {
 
   const docTitle = (quote?.docTitle || "ORÇAMENTO").toUpperCase();
 
-  const proposalLink = typeof window !== "undefined" ? `${window.location.origin}/view/proposta?id=${quote?.id || ""}` : "";
-
-  const whatsappUrl = quote
-    ? `https://wa.me/?text=${encodeURIComponent(
-        `Olá! Segue a proposta ${quote.number} — Mendes Design Móveis. Total: ${brl(total)}.\n\nVisualize e baixe o PDF aqui: ${proposalLink}\n\nQualquer dúvida estou à disposição!`
-      )}`
-    : "#";
-
-  const emailUrl = quote
-    ? `mailto:?subject=${encodeURIComponent(`Proposta ${quote.number} — Mendes Design Móveis`)}&body=${encodeURIComponent(`Olá!\n\nSegue a proposta ${quote.number} — Mendes Design Móveis.\nTotal: ${brl(total)}\n\nVisualize e baixe o PDF aqui: ${proposalLink}\n\nQualquer dúvida estou à disposição!`)}`
-    : "#";
-
   if (!quote) {
     return (
-      <AppLayout>
-        <div className="p-5">
-          <h1 className="font-serif text-2xl text-gold mb-2">Proposta — Preview</h1>
-          <p className="text-text2 text-[13px] mb-4">Assim o cliente recebe. Preto + dourado Mendes.</p>
-          <div className="bg-card border border-border rounded-2xl p-8 text-center">
-            <p className="text-text2 mb-4">Nenhum orçamento disponível. Crie um primeiro.</p>
-            <Link
-              href="/orcamento"
-              className="bg-gold text-bg font-bold border-none rounded-xl px-5 py-3 text-sm inline-flex items-center gap-2 hover:bg-gold-d transition-colors"
-            >
-              + Novo Orçamento
-            </Link>
-          </div>
-        </div>
-      </AppLayout>
+      <div style={{ padding: "40px", textAlign: "center", fontFamily: "sans-serif" }}>
+        <p>Proposta não encontrada.</p>
+      </div>
     );
   }
 
   return (
-    <AppLayout>
-      <div className="p-5">
-        {/* Controls — hidden on print */}
-        <div className="print-hide">
-          <h1 className="font-serif text-2xl text-gold mb-1">Proposta — Preview</h1>
-          <p className="text-text2 text-[13px] mb-4">Assim o cliente recebe. Preto + dourado Mendes.</p>
-
-          <div className="flex gap-2 mb-4">
-            <select
-              value={selectedId}
-              onChange={(e) => setSelectedId(e.target.value)}
-              className="flex-1 bg-bg2 border border-border rounded-[10px] text-text p-[11px_12px] text-sm outline-none focus:border-gold"
-            >
-              {quotes.map((q) => (
-                <option key={q.id} value={q.id}>
-                  {q.number} — {q.clientName || clients.find((c) => c.id === q.clientId)?.name || "Cliente"}
-                </option>
-              ))}
-            </select>
+    <>
+      {/* ===== PAPER ===== */}
+      <div className="paper-wrap">
+        <div className="paper">
+          {/* Header */}
+          <div className="ph">
+            <div className="plogo">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={company.logo || "/logo-md.png"}
+                alt={company.name}
+                className="plogo-img"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  target.style.display = "none";
+                  const fallback = document.createElement("div");
+                  fallback.className = "plogo-fallback";
+                  fallback.textContent = "MD";
+                  target.parentElement?.appendChild(fallback);
+                }}
+              />
+              <div className="plogo-info">
+                <h2>MENDES DESIGN</h2>
+                <span className="company-slogan">MÓVEIS PARA ÁREAS EXTERNAS</span>
+              </div>
+            </div>
+            <div className="quote-number">
+              <span>{docTitle}</span>
+              <b>{quote.number}</b>
+            </div>
           </div>
 
-          <div className="flex gap-2 mb-4">
-            <button
-              onClick={async () => {
-                const images = Array.from(document.querySelectorAll<HTMLImageElement>(".paper img"));
-                await Promise.all(
-                  images.map(
-                    (img) =>
-                      new Promise<void>((resolve) => {
-                        if (img.complete && img.naturalHeight !== 0) return resolve();
-                        img.onload = () => resolve();
-                        img.onerror = () => resolve();
-                      })
-                  )
-                );
-                window.print();
-              }}
-              className="flex-1 bg-gold text-bg font-bold border-none rounded-xl px-5 py-3 text-sm hover:bg-gold-d transition-colors"
-            >
-              <Download size={16} className="inline mr-1.5 -mt-0.5" /> Baixar PDF
-            </button>
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 flex items-center justify-center gap-2 px-5 py-3 text-sm rounded-xl border border-gold text-gold hover:bg-gold/10 transition-colors text-center"
-            >
-              <MessageCircle size={16} /> WhatsApp
-            </a>
-            <a
-              href={emailUrl}
-              className="flex-1 flex items-center justify-center gap-2 px-5 py-3 text-sm rounded-xl border border-border text-text2 hover:text-gold hover:border-gold transition-colors text-center"
-            >
-              <Mail size={16} /> E-mail
-            </a>
+          {/* Company + Client cards */}
+          <div className="info-cards">
+            <div className="info-card">
+              <div className="info-card-title">Dados da Empresa</div>
+              <div><b>{company.name || "Mendes Design Móveis"}</b></div>
+              {company.address && <div>{company.address}</div>}
+              {(company.city || company.state) && <div>{company.city}{company.state ? ` - ${company.state}` : ""}</div>}
+              {company.phone && <div>{company.phone}</div>}
+              {company.cnpj && <div>CNPJ: {company.cnpj}</div>}
+              <div style={{ marginTop: "8px" }}>{formatDatePtBR(quote.createdAt)}</div>
+            </div>
+            <div className="info-card">
+              <div className="info-card-title">Cliente</div>
+              <div><b>{quote.clientName || client?.name || "—"}</b></div>
+              <div><b>CNPJ/CPF:</b> {quote.clientDocument || client?.document || "—"}</div>
+              <div><b>Endereço:</b> {quote.clientAddress || client?.address || "—"}</div>
+              <div><b>Cidade:</b> {quote.clientCity || client?.city || "—"}</div>
+              <div><b>Telefone:</b> {quote.clientPhone || client?.phone || "—"}</div>
+              <div><b>Arquiteto(a):</b> {quote.clientArchitect || client?.architect || "—"}</div>
+            </div>
           </div>
 
-          <Link
-            href="/orcamento"
-            className="block text-center px-5 py-3 text-sm rounded-xl border border-border text-text2 hover:text-gold hover:border-gold transition-colors"
-          >
-            ← Voltar e editar
-          </Link>
+          {/* Title */}
+          <div className="orc-title">{docTitle}</div>
 
-          <div className="h-4" />
-        </div>
-
-        {/* ===== PAPER ===== */}
-        <div className="paper-wrap">
-          <div className="paper">
-            {/* Header */}
-            <div className="ph">
-              <div className="plogo">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={company.logo || "/logo-md.png"}
-                  alt={company.name}
-                  className="plogo-img"
-                  onError={(e) => {
-                    const target = e.currentTarget;
-                    target.style.display = "none";
-                    const fallback = document.createElement("div");
-                    fallback.className = "plogo-fallback";
-                    fallback.textContent = "MD";
-                    target.parentElement?.appendChild(fallback);
-                  }}
-                />
-                <div className="plogo-info">
-                  <h2>MENDES DESIGN</h2>
-                  <span className="company-slogan">MÓVEIS PARA ÁREAS EXTERNAS</span>
-                </div>
-              </div>
-              <div className="quote-number">
-                <span>{docTitle}</span>
-                <b>{quote.number}</b>
-              </div>
+          {/* Environments */}
+          {quote.environments.map((env, ei) => (
+            <div key={ei}>
+              <div className="area-t">▸ {env.name}</div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Qtd</th>
+                    <th>Código / Produto</th>
+                    <th>Medidas</th>
+                    <th>Acabamento</th>
+                    <th className="th-img">Ilustr.</th>
+                    <th>Unit.</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {env.items.map((item, ii) => {
+                    const product = catalog.find((p) => p.code === item.productCode);
+                    const unitPrice = item.unitPrice ?? product?.price ?? 0;
+                    return (
+                      <tr key={ii}>
+                        <td data-label="Item">{ii + 1}</td>
+                        <td data-label="Qtd">{item.qty}</td>
+                        <td data-label="Código / Produto">
+                          <b>{item.productCode}</b>
+                          {product && <><br />{product.name}</>}
+                        </td>
+                        <td data-label="Medidas">{product?.meas || "—"}</td>
+                        <td data-label="Acabamento">{product?.finish || "—"}</td>
+                        <td data-label="Ilustr." className="td-img">
+                          {product?.image ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                                const placeholder = document.createElement("div");
+                                placeholder.className = "placeholder-box";
+                                placeholder.innerHTML = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8a6d1a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>`;
+                                e.currentTarget.parentElement?.appendChild(placeholder);
+                              }}
+                            />
+                          ) : (
+                            <div className="placeholder-box">
+                              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8a6d1a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                              </svg>
+                            </div>
+                          )}
+                        </td>
+                        <td data-label="Unit." className="val-cell"><span className="curr">R$</span>{brl(unitPrice).replace("R$", "").trim()}</td>
+                        <td data-label="Total" className="val-cell"><span className="curr">R$</span>{brl(unitPrice * item.qty).replace("R$", "").trim()}</td>
+                      </tr>
+                    );
+                  })}
+                  <tr className="subt">
+                    <td colSpan={7} style={{ textAlign: "right" }}>SUBTOTAL</td>
+                    <td className="val-cell"><span className="curr">R$</span>{brl(envSubtotal(env, catalog)).replace("R$", "").trim()}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+          ))}
 
-            {/* Company + Client cards */}
-            <div className="info-cards">
-              <div className="info-card">
-                <div className="info-card-title">Dados da Empresa</div>
-                <div><b>{company.name || "Mendes Design Móveis"}</b></div>
-                {company.address && <div>{company.address}</div>}
-                {(company.city || company.state) && <div>{company.city}{company.state ? ` - ${company.state}` : ""}</div>}
-                {company.phone && <div>{company.phone}</div>}
-                {company.cnpj && <div>CNPJ: {company.cnpj}</div>}
-                <div style={{ marginTop: "8px" }}>{formatDatePtBR(quote.createdAt)}</div>
-              </div>
-              <div className="info-card">
-                <div className="info-card-title">Cliente</div>
-                <div><b>{quote.clientName || client?.name || "—"}</b></div>
-                <div><b>CNPJ/CPF:</b> {quote.clientDocument || client?.document || "—"}</div>
-                <div><b>Endereço:</b> {quote.clientAddress || client?.address || "—"}</div>
-                <div><b>Cidade:</b> {quote.clientCity || client?.city || "—"}</div>
-                <div><b>Telefone:</b> {quote.clientPhone || client?.phone || "—"}</div>
-                <div><b>Arquiteto(a):</b> {quote.clientArchitect || client?.architect || "—"}</div>
-              </div>
-            </div>
+          {/* Grand total */}
+          <div className="grand">
+            <span>TOTAL DE {pieces} PEÇAS</span>
+            <span>TOTAL {brl(total)}</span>
+          </div>
 
-            {/* Title */}
-            <div className="orc-title">{docTitle}</div>
+          {/* Footer */}
+          <div className="foot">
+            <b>Condições de pagamento:</b> {paymentText}{quote.paymentNotes ? <> &nbsp;·&nbsp; {quote.paymentNotes}</> : null} &nbsp;·&nbsp;
+            <b>Prazo de entrega:</b> {quote.deliveryTime || "90 DIAS"}
+            {docTitle !== "PEDIDO" && <>&nbsp;·&nbsp;<b>Validade:</b> {quote.validity || "15 dias"}</>}
+            <br />
+            {quote.footerNote || "IPI incluso · Frete CIF · Aguardamos retorno!"}
+          </div>
 
-            {/* Environments */}
-            {quote.environments.map((env, ei) => (
-              <div key={ei}>
-                <div className="area-t">▸ {env.name}</div>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Item</th>
-                      <th>Qtd</th>
-                      <th>Código / Produto</th>
-                      <th>Medidas</th>
-                      <th>Acabamento</th>
-                      <th className="th-img">Ilustr.</th>
-                      <th>Unit.</th>
-                      <th>Total</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {env.items.map((item, ii) => {
-                      const product = catalog.find((p) => p.code === item.productCode);
-                      const unitPrice = item.unitPrice ?? product?.price ?? 0;
-                      return (
-                        <tr key={ii}>
-                          <td data-label="Item">{ii + 1}</td>
-                          <td data-label="Qtd">{item.qty}</td>
-                          <td data-label="Código / Produto">
-                            <b>{item.productCode}</b>
-                            {product && <><br />{product.name}</>}
-                          </td>
-                          <td data-label="Medidas">{product?.meas || "—"}</td>
-                          <td data-label="Acabamento">{product?.finish || "—"}</td>
-                          <td data-label="Ilustr." className="td-img">
-                            {product?.image ? (
-                              // eslint-disable-next-line @next/next/no-img-element
-                              <img
-                                src={product.image}
-                                alt={product.name}
-                                onError={(e) => {
-                                  e.currentTarget.style.display = "none";
-                                  const placeholder = document.createElement("div");
-                                  placeholder.className = "placeholder-box";
-                                  placeholder.innerHTML = `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8a6d1a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>`;
-                                  e.currentTarget.parentElement?.appendChild(placeholder);
-                                }}
-                              />
-                            ) : (
-                              <div className="placeholder-box">
-                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#8a6d1a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                  <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                                </svg>
-                              </div>
-                            )}
-                          </td>
-                          <td data-label="Unit." className="val-cell"><span className="curr">R$</span>{brl(unitPrice).replace("R$", "").trim()}</td>
-                          <td data-label="Total" className="val-cell"><span className="curr">R$</span>{brl(unitPrice * item.qty).replace("R$", "").trim()}</td>
-                        </tr>
-                      );
-                    })}
-                    <tr className="subt">
-                      <td colSpan={7} style={{ textAlign: "right" }}>SUBTOTAL</td>
-                      <td className="val-cell"><span className="curr">R$</span>{brl(envSubtotal(env, catalog)).replace("R$", "").trim()}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            ))}
-
-            {/* Grand total */}
-            <div className="grand">
-              <span>TOTAL DE {pieces} PEÇAS</span>
-              <span>TOTAL {brl(total)}</span>
-            </div>
-
-            {/* Footer */}
-            <div className="foot">
-              <b>Condições de pagamento:</b> {paymentText}{quote.paymentNotes ? <> &nbsp;·&nbsp; {quote.paymentNotes}</> : null} &nbsp;·&nbsp;
-              <b>Prazo de entrega:</b> {quote.deliveryTime || "90 DIAS"}
-              {docTitle !== "PEDIDO" && <>&nbsp;·&nbsp;<b>Validade:</b> {quote.validity || "15 dias"}</>}
-              <br />
-              {quote.footerNote || "IPI incluso · Frete CIF · Aguardamos retorno!"}
-            </div>
-
-            {/* Signature */}
-            <div className="sig">
-              <div className="line" />
-              At.te, JOÃO BATISTA — Mendes Design Móveis<br />
-              34 9 9899-2309
-            </div>
+          {/* Signature */}
+          <div className="sig">
+            <div className="line" />
+            At.te, JOÃO BATISTA — Mendes Design Móveis<br />
+            34 9 9899-2309
           </div>
         </div>
       </div>
@@ -331,6 +227,13 @@ function PropostaInner() {
       {/* All styles */}
       <style>{`
         @page { size: A4; margin: 6mm 8mm; }
+
+        body {
+          margin: 0;
+          padding: 16px;
+          background: #f5f5f0;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
 
         /* ===== PAPER BASE ===== */
         .paper {
@@ -344,7 +247,7 @@ function PropostaInner() {
           box-shadow: 0 2px 12px rgba(0,0,0,.15);
           max-width: none;
           width: 100%;
-          margin: 0;
+          margin: 0 auto;
         }
         .paper *, .paper td, .paper th, .paper h2, .paper .foot, .paper .sig {
           color: #1a1a1a !important;
@@ -436,14 +339,12 @@ function PropostaInner() {
         .paper .td-img img { width: 110px; height: 82px; object-fit: contain; border-radius: 4px; border: 1px solid #E8E4DA; }
         .paper .placeholder-box { width: 110px; height: 82px; display: flex; align-items: center; justify-content: center; background: #F7F4EC; border: 1px solid #E8E4DA; border-radius: 4px; margin: 0 auto; }
         .paper .placeholder-box svg { width: 32px; height: 32px; }
-        .paper-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; }
+        .paper-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; max-width: 900px; margin: 0 auto; }
         .paper-wrap .paper { min-width: 680px; }
 
         /* ===== PRINT — A4 portrait ===== */
         @media print {
           html, body { width: 100% !important; margin: 0 !important; padding: 0 !important; }
-          .print-hide, header, nav, aside { display: none !important; }
-          main { padding-left: 0 !important; padding-bottom: 0 !important; margin-left: 0 !important; }
           .paper-wrap { overflow: visible !important; }
           .paper {
             min-width: 0 !important;
@@ -619,6 +520,7 @@ function PropostaInner() {
 
         /* ===== MOBILE CARDS ===== */
         @media (max-width: 720px) {
+          body { padding: 8px; }
           .paper-wrap { overflow: visible; }
           .paper-wrap .paper { min-width: 0; padding: 14px 12px; }
 
@@ -686,14 +588,14 @@ function PropostaInner() {
           .paper .grand span { color: #C9A227 !important; }
         }
       `}</style>
-    </AppLayout>
+    </>
   );
 }
 
-export default function PropostaPage() {
+export default function PropostaViewPage() {
   return (
     <Suspense>
-      <PropostaInner />
+      <PropostaViewInner />
     </Suspense>
   );
 }

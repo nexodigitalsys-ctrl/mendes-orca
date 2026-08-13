@@ -785,7 +785,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
 
         <div className="flex gap-2">
           <a
-            href={isEditing ? `https://wa.me/?text=${encodeURIComponent(`Olá! Segue a proposta ${number} — Mendes Design Móveis. Total: ${brl(totals.total)}.\n\nVisualize e baixe o PDF aqui: ${typeof window !== "undefined" ? `${window.location.origin}/proposta?id=${editingId}` : ""}\n\nQualquer dúvida estou à disposição!`)}` : "#"}
+            href={isEditing ? `https://wa.me/?text=${encodeURIComponent(`Olá! Segue a proposta ${number} — Mendes Design Móveis. Total: ${brl(totals.total)}.\n\nVisualize e baixe o PDF aqui: ${typeof window !== "undefined" ? `${window.location.origin}/view/proposta?id=${editingId}` : ""}\n\nQualquer dúvida estou à disposição!`)}` : "#"}
             target="_blank"
             rel="noopener noreferrer"
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-xs rounded-xl border transition-colors ${isEditing ? "border-gold text-gold hover:bg-gold/10" : "border-border text-text2 opacity-50 cursor-not-allowed"}`}
@@ -793,7 +793,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
             <MessageCircle size={14} /> WhatsApp
           </a>
           <a
-            href={isEditing ? `mailto:?subject=${encodeURIComponent(`Proposta ${number} — Mendes Design Móveis`)}&body=${encodeURIComponent(`Olá!\n\nSegue a proposta ${number} — Mendes Design Móveis.\nTotal: ${brl(totals.total)}\n\nVisualize e baixe o PDF aqui: ${typeof window !== "undefined" ? `${window.location.origin}/proposta?id=${editingId}` : ""}\n\nQualquer dúvida estou à disposição!`)}` : "#"}
+            href={isEditing ? `mailto:?subject=${encodeURIComponent(`Proposta ${number} — Mendes Design Móveis`)}&body=${encodeURIComponent(`Olá!\n\nSegue a proposta ${number} — Mendes Design Móveis.\nTotal: ${brl(totals.total)}\n\nVisualize e baixe o PDF aqui: ${typeof window !== "undefined" ? `${window.location.origin}/view/proposta?id=${editingId}` : ""}\n\nQualquer dúvida estou à disposição!`)}` : "#"}
             className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-xs rounded-xl border transition-colors ${isEditing ? "border-border text-text2 hover:text-gold hover:border-gold" : "border-border text-text2 opacity-50 cursor-not-allowed"}`}
           >
             <Mail size={14} /> E-mail

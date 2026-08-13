@@ -101,7 +101,7 @@ function ReciboContent() {
 
   const parsedValue = parseFloat(receiptValue) || 0;
 
-  const receiptLink = typeof window !== "undefined" ? `${window.location.origin}/recibo?quote=${quote?.id || ""}` : "";
+  const receiptLink = typeof window !== "undefined" ? `${window.location.origin}/view/proposta?id=${quote?.id || ""}` : "";
 
   const whatsappUrl = quote
     ? `https://wa.me/?text=${encodeURIComponent(
