@@ -13,11 +13,18 @@
 
 **Arquivo:** `src/app/view/proposta/page.tsx`
 
-**Solução:** Alterado `@media (max-width: 720px)` para `@media screen and (max-width: 720px)` nos arquivos:
+**Solução (2 camadas):**
+
+1. `@media (max-width: 720px)` → `@media screen and (max-width: 720px)` — impede CSS mobile em print
+2. Reforço no `@media print`:
+   - `html, body` com `width/min-width/max-width: 210mm` — força largura A4
+   - Regras explícitas para `table/thead/tbody/tr/td/th` com `display: table*` — anula layout grid/mobile
+   - `.info-cards` com `grid-template-columns: 1fr 1fr` — mantém cards lado a lado
+   - `.grand` com `flex-direction: row` — mantém total em linha
+
+**Arquivos alterados:**
 - `src/app/view/proposta/page.tsx` (página pública)
 - `src/app/proposta/page.tsx` (página interna)
-
-Isso garante que o CSS mobile só se aplica em tela, nunca em print.
 
 ## Estrutura do Projeto
 - Next.js 16 + React 19 + Supabase + Tailwind CSS

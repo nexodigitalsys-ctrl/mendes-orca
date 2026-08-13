@@ -359,11 +359,18 @@ function PropostaViewInner() {
 
         /* ===== PRINT — A4 portrait ===== */
         @media print {
+          @page { size: A4 portrait; margin: 8mm; }
+
           html, body {
-            width: 100% !important;
+            width: 210mm !important;
+            min-width: 210mm !important;
+            max-width: 210mm !important;
             margin: 0 !important;
             padding: 0 !important;
             background: white !important;
+            overflow-x: hidden !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
           }
 
           .page-container {
@@ -542,6 +549,54 @@ function PropostaViewInner() {
           /* ZEBRADO */
           .paper tbody tr:nth-child(even) td { background: #f5f3ed !important; }
           .paper tbody tr:nth-child(odd) td { background: #ffffff !important; }
+
+          /* === ANULAR COMPLETAMENTE O LAYOUT MOBILE DENTRO DO PRINT === */
+          .page-container {
+            padding: 0 !important;
+            max-width: 194mm !important;
+            margin: 0 auto !important;
+          }
+
+          .paper .ph {
+            flex-wrap: nowrap !important;
+          }
+          .paper .quote-number {
+            width: auto !important;
+            text-align: right !important;
+            flex-direction: column !important;
+          }
+
+          /* Forçar tabela em linha — nunca empilhada */
+          .paper table,
+          .paper table thead,
+          .paper table tbody,
+          .paper table tr {
+            display: revert !important;
+          }
+          .paper table thead { display: table-header-group !important; }
+          .paper table tbody { display: table-row-group !important; }
+          .paper table tr { display: table-row !important; }
+          .paper table th,
+          .paper table td {
+            display: table-cell !important;
+            width: auto !important;
+          }
+
+          /* Esconder labels mobile no print */
+          .paper table tbody td::before {
+            display: none !important;
+            content: none !important;
+          }
+
+          /* Info cards lado a lado */
+          .paper .info-cards {
+            grid-template-columns: 1fr 1fr !important;
+          }
+
+          /* Grand total em linha */
+          .paper .grand {
+            flex-direction: row !important;
+          }
         }
 
         /* ===== MOBILE (screen only — print always uses desktop layout) ===== */
