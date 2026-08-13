@@ -15,7 +15,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Mendes Orça | Sistema de Orçamentos",
+  title: "Sistema Mendes",
   icons: "/logo-md.png",
 };
 

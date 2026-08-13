@@ -621,7 +621,7 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
         })}
 
         {/* === D. CONDIÇÕES === */}
-        <div className="grid grid-cols-2 gap-2.5 mt-4 mb-2">
+        <div className={`grid gap-2.5 mt-4 mb-2 ${isPedido ? "grid-cols-1" : "grid-cols-2"}`}>
           <div>
             <label className="block text-[11px] text-text2 mb-1.5 uppercase tracking-[0.4px]">Prazo de entrega</label>
             <input
@@ -630,14 +630,16 @@ export default function QuoteForm({ mode }: { mode: "orcamento" | "pedido" }) {
               className="w-full bg-bg2 border border-border rounded-[10px] text-text p-[11px_12px] text-sm outline-none focus:border-gold"
             />
           </div>
-          <div>
-            <label className="block text-[11px] text-text2 mb-1.5 uppercase tracking-[0.4px]">Validade da proposta</label>
-            <input
-              value={validity}
-              onChange={(e) => setValidity(e.target.value)}
-              className="w-full bg-bg2 border border-border rounded-[10px] text-text p-[11px_12px] text-sm outline-none focus:border-gold"
-            />
-          </div>
+          {!isPedido && (
+            <div>
+              <label className="block text-[11px] text-text2 mb-1.5 uppercase tracking-[0.4px]">Validade da proposta</label>
+              <input
+                value={validity}
+                onChange={(e) => setValidity(e.target.value)}
+                className="w-full bg-bg2 border border-border rounded-[10px] text-text p-[11px_12px] text-sm outline-none focus:border-gold"
+              />
+            </div>
+          )}
         </div>
 
         <label className="block text-[11px] text-text2 mb-1.5 uppercase tracking-[0.4px]">Condições de pagamento</label>
