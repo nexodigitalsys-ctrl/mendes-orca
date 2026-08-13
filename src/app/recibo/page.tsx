@@ -7,7 +7,7 @@ import AppLayout from "@/components/AppLayout";
 import { CATALOG, CLIENTS, DEFAULT_COMPANY, brl, type Client, type Company, type Product, type Quote } from "@/lib/constants";
 import { useSupabaseCollection, useSupabaseCompany } from "@/lib/store";
 import { valorPorExtenso } from "@/lib/extenso";
-import { Download, MessageCircle, ArrowLeft } from "lucide-react";
+import { Download, MessageCircle, ArrowLeft, Mail } from "lucide-react";
 
 const MONTHS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 
@@ -101,10 +101,16 @@ function ReciboContent() {
 
   const parsedValue = parseFloat(receiptValue) || 0;
 
+  const receiptLink = typeof window !== "undefined" ? `${window.location.origin}/recibo?quote=${quote?.id || ""}` : "";
+
   const whatsappUrl = quote
     ? `https://wa.me/?text=${encodeURIComponent(
-        `Olá! Segue o recibo ${receiptNumber} no valor de ${brl(parsedValue)} — Mendes Design Móveis. Obrigado pela confiança!`
+        `Olá! Segue o recibo ${receiptNumber} no valor de ${brl(parsedValue)} — Mendes Design Móveis.\n\nVisualize e baixe o PDF aqui: ${receiptLink}\n\nObrigado pela confiança!`
       )}`
+    : "#";
+
+  const emailUrl = quote
+    ? `mailto:?subject=${encodeURIComponent(`Recibo ${receiptNumber} — Mendes Design Móveis`)}&body=${encodeURIComponent(`Olá!\n\nSegue o recibo ${receiptNumber} no valor de ${brl(parsedValue)} — Mendes Design Móveis.\n\nVisualize e baixe o PDF aqui: ${receiptLink}\n\nObrigado pela confiança!`)}`
     : "#";
 
   if (!quote) {
@@ -215,6 +221,12 @@ function ReciboContent() {
               className="flex-1 flex items-center justify-center gap-2 px-5 py-3 text-sm rounded-xl border border-gold text-gold hover:bg-gold/10 transition-colors text-center"
             >
               <MessageCircle size={16} /> WhatsApp
+            </a>
+            <a
+              href={emailUrl}
+              className="flex-1 flex items-center justify-center gap-2 px-5 py-3 text-sm rounded-xl border border-border text-text2 hover:text-gold hover:border-gold transition-colors text-center"
+            >
+              <Mail size={16} /> E-mail
             </a>
           </div>
 

@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import AppLayout from "@/components/AppLayout";
 import { CATALOG, CLIENTS, DEFAULT_COMPANY, brl, paymentLabel, type Product, type Client, type Company, type Quote } from "@/lib/constants";
 import { useSupabaseCollection, useSupabaseCompany } from "@/lib/store";
-import { Download, MessageCircle, ArrowLeft } from "lucide-react";
+import { Download, MessageCircle, ArrowLeft, Mail } from "lucide-react";
 
 const MONTHS = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
 
@@ -80,10 +80,16 @@ function PropostaInner() {
 
   const docTitle = (quote?.docTitle || "ORÇAMENTO").toUpperCase();
 
+  const proposalLink = typeof window !== "undefined" ? `${window.location.origin}/proposta?id=${quote?.id || ""}` : "";
+
   const whatsappUrl = quote
     ? `https://wa.me/?text=${encodeURIComponent(
-        `Olá! Segue a proposta ${quote.number} — Mendes Design Móveis. Total: ${brl(total)}. Qualquer dúvida estou à disposição!`
+        `Olá! Segue a proposta ${quote.number} — Mendes Design Móveis. Total: ${brl(total)}.\n\nVisualize e baixe o PDF aqui: ${proposalLink}\n\nQualquer dúvida estou à disposição!`
       )}`
+    : "#";
+
+  const emailUrl = quote
+    ? `mailto:?subject=${encodeURIComponent(`Proposta ${quote.number} — Mendes Design Móveis`)}&body=${encodeURIComponent(`Olá!\n\nSegue a proposta ${quote.number} — Mendes Design Móveis.\nTotal: ${brl(total)}\n\nVisualize e baixe o PDF aqui: ${proposalLink}\n\nQualquer dúvida estou à disposição!`)}`
     : "#";
 
   if (!quote) {
@@ -155,6 +161,12 @@ function PropostaInner() {
               className="flex-1 flex items-center justify-center gap-2 px-5 py-3 text-sm rounded-xl border border-gold text-gold hover:bg-gold/10 transition-colors text-center"
             >
               <MessageCircle size={16} /> WhatsApp
+            </a>
+            <a
+              href={emailUrl}
+              className="flex-1 flex items-center justify-center gap-2 px-5 py-3 text-sm rounded-xl border border-border text-text2 hover:text-gold hover:border-gold transition-colors text-center"
+            >
+              <Mail size={16} /> E-mail
             </a>
           </div>
 
