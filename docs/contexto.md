@@ -1,33 +1,39 @@
 # Contexto do Projeto — Mendes Orça
 
-## Problema Atual (2026-08-13)
-**PDF quebrado no mobile ao abrir link do WhatsApp**
+## Status (2026-08-13) — RESOLVIDO
+**PDF/mobile na página pública de propostas**
 
-- Gerar PDF via desktop: funciona perfeitamente
-- Abrir link da proposta no mobile via WhatsApp: layout quebrado
-  - Colunas empilhadas
-  - Mais de uma página gerada
-  - Elementos mudam de lugar
+### Problema
+- Link do WhatsApp `/view/proposta?id=XXX` aberto no mobile mostrava layout quebrado (colunas empilhadas, múltiplas páginas)
+- Desktop funcionava perfeitamente
+- Clientes leigos se assustavam com o preview quebrado
 
-**Causa raiz:** O `@media print` está sendo sobrescrito pelo `@media (max-width: 720px)` em mobile, pois ambos os media queries se aplicam simultaneamente quando o usuário tenta imprimir/salvar PDF no celular.
+### Solução aplicada (3 commits)
+1. **`@media (max-width: 720px)` → `@media screen and (max-width: 720px)`** — impede CSS mobile em print (ambos arquivos)
+2. **Reforço no `@media print`** — `html/body` com `210mm`, tabela forçada como `display: table*`, cards lado a lado, grand total em linha
+3. **Botão "Baixar PDF"** na página pública — JS adiciona classe `force-print-layout` antes de `window.print()`, contorna bugs de `@media print` em navegadores mobile
+4. **Removeu layout mobile** da página pública — documento sempre no formato papel, cliente dá zoom/scroll horizontal
 
-**Arquivo:** `src/app/view/proposta/page.tsx`
+### Commits
+- `c816b25` — fix: força layout desktop no print do mobile para propostas
+- `f4488a0` — fix: reforça layout desktop no @media print para mobile
+- `653c663` — feat: adiciona botão Baixar PDF na página pública com force-print-layout
+- `4796f6d` — fix: remove layout mobile da página pública — mantém formato papel
 
-**Solução (2 camadas):**
-
-1. `@media (max-width: 720px)` → `@media screen and (max-width: 720px)` — impede CSS mobile em print
-2. Reforço no `@media print`:
-   - `html, body` com `width/min-width/max-width: 210mm` — força largura A4
-   - Regras explícitas para `table/thead/tbody/tr/td/th` com `display: table*` — anula layout grid/mobile
-   - `.info-cards` com `grid-template-columns: 1fr 1fr` — mantém cards lado a lado
-   - `.grand` com `flex-direction: row` — mantém total em linha
-
-**Arquivos alterados:**
-- `src/app/view/proposta/page.tsx` (página pública)
-- `src/app/proposta/page.tsx` (página interna)
+### Arquivos alterados
+- `src/app/view/proposta/page.tsx` (página pública — link WhatsApp)
+- `src/app/proposta/page.tsx` (página interna — botão Baixar PDF)
+- `docs/contexto.md` (este arquivo)
 
 ## Estrutura do Projeto
 - Next.js 16 + React 19 + Supabase + Tailwind CSS
-- Páginas: catálogo, proposta, pedidos, clientes, empresa, orçamento
+- Páginas: catálogo, proposta, pedidos, clientes, empresa, orçamento, recibo
 - API routes: products, quotes, upload, clients, company
 - Link público para visualização de proposta: `/view/proposta?id=XXX`
+- PDF gerado via `window.print()` + `@media print` (sem backend)
+- WhatsApp envia link público, não PDF direto
+
+## Observações
+- A página interna (`/proposta`) mantém layout mobile para visualização no admin
+- A página pública (`/view/proposta`) agora é sempre formato papel
+- `force-print-layout` é uma classe body adicionada via JS antes do print e removida depois
