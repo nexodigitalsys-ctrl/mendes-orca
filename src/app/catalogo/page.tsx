@@ -4,7 +4,7 @@ import { useState, useRef, useMemo } from "react";
 import AppLayout from "@/components/AppLayout";
 import { CATALOG, brl, type Product } from "@/lib/constants";
 import { useSupabaseCollection, uploadImage } from "@/lib/store";
-import { Search, Pencil, Trash2 } from "lucide-react";
+import { Search, Pencil, Trash2, Camera } from "lucide-react";
 
 const EMPTY_FORM: Product = { code: "", name: "", meas: "", finish: "", price: 0, image: "" };
 
@@ -331,7 +331,7 @@ export default function CatalogoPage() {
                 onClick={() => fileRef.current?.click()}
                 className="bg-bg2 border border-dashed border-border rounded-[10px] text-text2 p-3 text-sm w-full hover:border-gold hover:text-gold transition-colors"
               >
-                {form.image ? "📷 Imagem selecionada — clique para trocar" : "📷 Selecionar imagem"}
+                {form.image ? <><Camera size={16} className="inline mr-1.5 -mt-0.5" />Imagem selecionada — clique para trocar</> : <><Camera size={16} className="inline mr-1.5 -mt-0.5" />Selecionar imagem</>}
               </button>
               {form.image && (
                 <div className="mt-2">
